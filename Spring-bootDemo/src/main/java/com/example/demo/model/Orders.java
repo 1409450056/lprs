@@ -13,7 +13,6 @@ public class Orders implements Serializable {
     public Orders(String number, Date deploytime, Byte finished) {
         this.number = number;
         this.deploytime = deploytime;
-        this.lefttime = lefttime;
         this.finished = finished;
     }
     private String number;

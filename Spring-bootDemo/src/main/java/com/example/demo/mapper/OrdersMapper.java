@@ -3,6 +3,8 @@ package com.example.demo.mapper;
 import com.example.demo.model.Orders;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface OrdersMapper {
     int deleteByPrimaryKey(String number);
@@ -16,4 +18,6 @@ public interface OrdersMapper {
     int updateByPrimaryKeySelective(Orders record);
 
     int updateByPrimaryKey(Orders record);
+    
+    List<Orders> selectAll();
 }
