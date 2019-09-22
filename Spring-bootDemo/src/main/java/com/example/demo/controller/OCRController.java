@@ -14,9 +14,9 @@ import java.util.Objects;
 @Api(value = "车牌识别")
 @RestController
 public class OCRController {
-    public static final String APP_ID = "自己找去";
-    public static final String API_KEY = "自己找去";
-    public static final String SECRET_KEY = "自己找去";
+    public static final String APP_ID = "16965760";
+    public static final String API_KEY = "RqpVroiLSbzRjOuzstlPNAxx";
+    public static final String SECRET_KEY = "oUsGUGdkqmkW15GKmeKSwKXYNQhS6Xsa";
 
     @ResponseBody
     @PostMapping("api/ocrimg")
