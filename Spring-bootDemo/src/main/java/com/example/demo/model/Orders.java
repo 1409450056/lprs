@@ -4,26 +4,33 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Orders implements Serializable {
-    public Orders(String number, Date deploytime, Date lefttime, Byte finished) {
+    private Integer orderno;
+
+    public Orders(Integer orderno, String number, Date deploytime, Date lefttime, Integer status) {
+        this.orderno = orderno;
         this.number = number;
         this.deploytime = deploytime;
         this.lefttime = lefttime;
-        this.finished = finished;
+        this.status = status;
     }
-    public Orders(String number, Date deploytime, Byte finished) {
-        this.number = number;
-        this.deploytime = deploytime;
-        this.finished = finished;
-    }
+
     private String number;
 
     private Date deploytime;
 
     private Date lefttime;
 
-    private Byte finished;
+    private Integer status;
 
     private static final long serialVersionUID = 1L;
+
+    public Integer getOrderno() {
+        return orderno;
+    }
+
+    public void setOrderno(Integer orderno) {
+        this.orderno = orderno;
+    }
 
     public String getNumber() {
         return number;
@@ -49,11 +56,11 @@ public class Orders implements Serializable {
         this.lefttime = lefttime;
     }
 
-    public Byte getFinished() {
-        return finished;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setFinished(Byte finished) {
-        this.finished = finished;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

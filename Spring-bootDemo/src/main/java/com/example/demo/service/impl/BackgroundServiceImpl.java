@@ -35,7 +35,7 @@ public class BackgroundServiceImpl implements BackgroundService {
         String currentTime = DateUtil.currentDateTime();
         System.out.print(currentTime);
         try{
-        ordersmapper.insert(new Orders(number,DateUtil.dateTime(currentTime),a));
+        // ordersmapper.insert(new Orders(number,DateUtil.dateTime(currentTime),a));
         System.out.println("插入"+number+currentTime);
         }catch(Exception e){
             System.err.println(e);

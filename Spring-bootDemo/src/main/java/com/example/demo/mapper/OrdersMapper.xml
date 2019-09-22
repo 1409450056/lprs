@@ -3,35 +3,36 @@
 <mapper namespace="com.example.demo.mapper.OrdersMapper">
   <resultMap id="BaseResultMap" type="com.example.demo.model.Orders">
     <!--@mbg.generated-->
-    <id column="number" jdbcType="VARCHAR" property="number" />
+    <id column="orderNo" jdbcType="INTEGER" property="orderno" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="deployTime" jdbcType="TIMESTAMP" property="deploytime" />
     <result column="leftTime" jdbcType="TIMESTAMP" property="lefttime" />
-    <result column="finished" jdbcType="TINYINT" property="finished" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    `number`, deployTime, leftTime, finished
+    orderNo, `number`, deployTime, leftTime, `status`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from orders
-    where `number` = #{number,jdbcType=VARCHAR}
+    where orderNo = #{orderno,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from orders
-    where `number` = #{number,jdbcType=VARCHAR}
+    where orderNo = #{orderno,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.example.demo.model.Orders">
+  <insert id="insert" keyColumn="orderNo" keyProperty="orderno" parameterType="com.example.demo.model.Orders" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into orders (`number`, deployTime, leftTime, 
-      finished)
-    values (#{number,jdbcType=VARCHAR}, #{deploytime,jdbcType=TIMESTAMP}, #{lefttime,jdbcType=TIMESTAMP}, 
-      #{finished,jdbcType=TINYINT})
+    insert into orders (`number`, deployTime, leftTime,
+      `status`)
+    values (#{number,jdbcType=VARCHAR}, #{deploytime,jdbcType=TIMESTAMP}, #{lefttime,jdbcType=TIMESTAMP},
+      #{status,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.example.demo.model.Orders">
+  <insert id="insertSelective" keyColumn="orderNo" keyProperty="orderno" parameterType="com.example.demo.model.Orders" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into orders
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -44,8 +45,8 @@
       <if test="lefttime != null">
         leftTime,
       </if>
-      <if test="finished != null">
-        finished,
+      <if test="status != null">
+        `status`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -58,8 +59,8 @@
       <if test="lefttime != null">
         #{lefttime,jdbcType=TIMESTAMP},
       </if>
-      <if test="finished != null">
-        #{finished,jdbcType=TINYINT},
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -67,29 +68,47 @@
     <!--@mbg.generated-->
     update orders
     <set>
+      <if test="number != null">
+        `number` = #{number,jdbcType=VARCHAR},
+      </if>
       <if test="deploytime != null">
         deployTime = #{deploytime,jdbcType=TIMESTAMP},
       </if>
       <if test="lefttime != null">
         leftTime = #{lefttime,jdbcType=TIMESTAMP},
       </if>
-      <if test="finished != null">
-        finished = #{finished,jdbcType=TINYINT},
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
       </if>
     </set>
-    where `number` = #{number,jdbcType=VARCHAR}
+    where orderNo = #{orderno,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.demo.model.Orders">
     <!--@mbg.generated-->
     update orders
-    set deployTime = #{deploytime,jdbcType=TIMESTAMP},
+    set `number` = #{number,jdbcType=VARCHAR},
+      deployTime = #{deploytime,jdbcType=TIMESTAMP},
       leftTime = #{lefttime,jdbcType=TIMESTAMP},
-      finished = #{finished,jdbcType=TINYINT}
-    where `number` = #{number,jdbcType=VARCHAR}
+      `status` = #{status,jdbcType=INTEGER}
+    where orderNo = #{orderno,jdbcType=INTEGER}
   </update>
+
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from orders
   </select>
+    <select id="getAllStatus" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select
+        status
+        from orders
+        where number = #{number,jdbcType=VARCHAR}
+    </select>
+    <update id="finishOrder" parameterType="com.example.demo.model.Orders">
+        update orders
+        set
+        leftTime = #{lefttime,jdbcType=TIMESTAMP},
+        `status` = #{status,jdbcType=INTEGER}
+        where orderNo = #{orderno,jdbcType=INTEGER}
+    </update>
 </mapper>
