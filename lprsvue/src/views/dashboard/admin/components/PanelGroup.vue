@@ -35,7 +35,7 @@
           <div class="card-panel-text">
             成交金额
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="99280" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>

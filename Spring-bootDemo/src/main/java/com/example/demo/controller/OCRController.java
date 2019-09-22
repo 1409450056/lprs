@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.baidu.aip.imageclassify.AipImageClassify;
 import com.baidu.aip.ocr.AipOcr;
 import io.swagger.annotations.Api;
 import org.json.JSONObject;
@@ -24,25 +25,53 @@ public class OCRController {
         if (Objects.isNull(file) || file.isEmpty()) {
             return "文件为空，请重新上传";
         }
-        HashMap<String, String> options = new HashMap<String, String>();
-        options.put("language_type", "CHN_ENG");
-        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
-        byte[] bite = file.getBytes();
-        JSONObject jsonObject = client.plateLicense(bite, options);
-        System.out.println(jsonObject.toString());
-        return jsonObject.toString();
+        String number;
+        try {
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("language_type", "CHN_ENG");
+            AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+            byte[] bite = file.getBytes();
+            JSONObject jsonObject = client.plateLicense(bite, options);
+            System.out.println(jsonObject.toString());
+            number = jsonObject.toString();
+        }catch(Exception e){
+            System.err.println(e);
+            number = null;
+        }
+        return number;
     }
 
     public String getPlate(MultipartFile file) throws IOException {
-        HashMap<String, String> options = new HashMap<String, String>();
-        options.put("language_type", "CHN_ENG");
-        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
-        byte[] bite = file.getBytes();
-        JSONObject jsonObject = client.plateLicense(bite, options);
-        String plate;
-        jsonObject = jsonObject.getJSONObject("words_result");
-        plate = jsonObject.getString("number");
-        System.out.println(plate);
-        return plate;
+        String number;
+        try {
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("language_type", "CHN_ENG");
+            AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+            byte[] bite = file.getBytes();
+            JSONObject jsonObject = client.plateLicense(bite, options);
+            jsonObject = jsonObject.getJSONObject("words_result");
+            number = jsonObject.getString("number");
+            System.out.println(number);
+
+        } catch (Exception e) {
+            System.err.println(e);
+            number = null;
+        }
+        return number;
+    }
+    public JSONObject getCarInfo(MultipartFile file) throws IOException {
+        JSONObject jsonObject = null;
+        try {
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("language_type", "CHN_ENG");
+            AipImageClassify client = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
+            byte[] bite = file.getBytes();
+            jsonObject = client.carDetect(bite, options);
+        } catch (Exception e) {
+            System.err.println(e);
+            jsonObject = null;
+        }
+        return jsonObject;
     }
 }
+

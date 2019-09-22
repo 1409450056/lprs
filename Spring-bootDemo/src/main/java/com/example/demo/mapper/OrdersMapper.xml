@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.OrdersMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.Orders">
+    <!--@mbg.generated-->
+    <id column="number" jdbcType="VARCHAR" property="number" />
+    <result column="deployTime" jdbcType="TIMESTAMP" property="deploytime" />
+    <result column="leftTime" jdbcType="TIMESTAMP" property="lefttime" />
+    <result column="finished" jdbcType="TINYINT" property="finished" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    `number`, deployTime, leftTime, finished
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where `number` = #{number,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from orders
+    where `number` = #{number,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.model.Orders">
+    <!--@mbg.generated-->
+    insert into orders (`number`, deployTime, leftTime, 
+      finished)
+    values (#{number,jdbcType=VARCHAR}, #{deploytime,jdbcType=TIMESTAMP}, #{lefttime,jdbcType=TIMESTAMP}, 
+      #{finished,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.Orders">
+    <!--@mbg.generated-->
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="number != null">
+        `number`,
+      </if>
+      <if test="deploytime != null">
+        deployTime,
+      </if>
+      <if test="lefttime != null">
+        leftTime,
+      </if>
+      <if test="finished != null">
+        finished,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="deploytime != null">
+        #{deploytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lefttime != null">
+        #{lefttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finished != null">
+        #{finished,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.model.Orders">
+    <!--@mbg.generated-->
+    update orders
+    <set>
+      <if test="deploytime != null">
+        deployTime = #{deploytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lefttime != null">
+        leftTime = #{lefttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finished != null">
+        finished = #{finished,jdbcType=TINYINT},
+      </if>
+    </set>
+    where `number` = #{number,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.model.Orders">
+    <!--@mbg.generated-->
+    update orders
+    set deployTime = #{deploytime,jdbcType=TIMESTAMP},
+      leftTime = #{lefttime,jdbcType=TIMESTAMP},
+      finished = #{finished,jdbcType=TINYINT}
+    where `number` = #{number,jdbcType=VARCHAR}
+  </update>
+</mapper>

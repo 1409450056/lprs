@@ -4,18 +4,17 @@ import com.example.demo.mapper.NumpicMapper;
 import com.example.demo.model.Numpic;
 import com.example.demo.service.NumpicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class NumpicImpl implements NumpicService {
+@Service
+public class NumpicServiceImpl implements NumpicService {
     @Autowired
     private NumpicMapper numpicMapper;
 
     @Override
-    public boolean bindPic(String number, String URL) {
-        if(numpicMapper.selectByPrimaryKey(number)==null){
-            numpicMapper.insert(new Numpic(number,URL));
-            return true;
-        }
-        return false;
+    public void bindPic(String number, String URL) {
+            numpicMapper.insert(new Numpic(number, URL));
+            System.out.println("插入数据" + number);
     }
 
     @Override
@@ -25,6 +24,14 @@ public class NumpicImpl implements NumpicService {
 
     @Override
     public String getUrl(String number) {
-        return null;
+        return numpicMapper.selectByPrimaryKey(number).getUrl();
+    }
+
+    @Override
+    public boolean findDuplicate(String number) {
+        if(numpicMapper.selectByPrimaryKey(number)==null){
+            return true;
+        }
+        return false;
     }
 }
