@@ -45,12 +45,12 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div style="position:relative">
         <br>
         <el-button class="register-button" type="primary" @click="showDialog=true">
-          Register
+          注册
         </el-button>
       </div>
     </el-form>
@@ -145,11 +145,11 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
-            .then(successResponse => {
+            .then(() => {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
-            .catch(failResponse => {
+            .catch(() => {
               this.loading = false
             })
         } else {

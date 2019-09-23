@@ -4,7 +4,7 @@ const tokens = {
     token: 'admin-token'
   },
   editor: {
-    token: 'editor-token'
+    token: 'user-token'
   }
 }
 
@@ -13,13 +13,13 @@ const users = {
     roles: ['admin'],
     introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Super Admin'
+    name: 'Admin'
   },
-  'editor-token': {
-    roles: ['editor'],
-    introduction: 'I am an editor',
+  'user-token': {
+    roles: ['user'],
+    introduction: 'I am an user',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Normal Editor'
+    name: 'User'
   }
 }
 

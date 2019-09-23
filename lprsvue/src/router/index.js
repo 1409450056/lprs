@@ -42,6 +42,11 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
+  {
+    path: '/401',
+    component: () => import('@/views/401'),
+    hidden: true
+  },
 
   {
     path: '/',
@@ -142,6 +147,7 @@ export const constantRoutes = [
 
   {
     path: '/upload',
+    redirect: '/upload/index',
     component: Layout,
     children: [
       {
@@ -164,8 +170,42 @@ export const constantRoutes = [
         meta: { title: '图标', icon: 'icon', noCache: true }
       }
     ]
-  },
+  }
+]
 
+export const asyncRoutes = [
+  {
+    path: '/permission',
+    component: Layout,
+    redirect: '/permission/role',
+    alwaysShow: true, // will always show the root menu
+    name: 'Permission',
+    meta: {
+      title: '权限管理',
+      icon: 'lock',
+      roles: ['admin'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'page',
+        component: () => import('@/views/permission/page'),
+        name: 'PagePermission',
+        meta: {
+          title: '权限切换',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/permission/role'),
+        name: 'RolePermission',
+        meta: {
+          title: '用户管理',
+          roles: ['admin']
+        }
+      }
+    ]
+  },
   {
     path: 'external-link',
     component: Layout,
@@ -176,7 +216,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

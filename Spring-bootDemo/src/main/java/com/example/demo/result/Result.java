@@ -29,6 +29,10 @@ public class Result {
         this.data = data;
         this.message = message;
     }
+    public Result(int code, Map<String,String> data){
+        this.code = code;
+        this.data = data;
+    }
 
     public int getCode() {
         return code;

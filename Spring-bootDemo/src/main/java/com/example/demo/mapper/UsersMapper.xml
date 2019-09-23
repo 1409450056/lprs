@@ -3,34 +3,35 @@
 <mapper namespace="com.example.demo.mapper.UsersMapper">
   <resultMap id="BaseResultMap" type="com.example.demo.model.Users">
     <!--@mbg.generated-->
-    <id column="username" jdbcType="VARCHAR" property="username" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="role" jdbcType="VARCHAR" property="role" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    username, `password`, `role`
+    id, username, `password`, `role`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select
     <include refid="Base_Column_List" />
     from users
-    where username = #{username,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from users
-    where username = #{username,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.example.demo.model.Users">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.demo.model.Users" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into users (username, `password`, `role`
       )
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.demo.model.Users">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.demo.model.Users" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into users
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -60,6 +61,9 @@
     <!--@mbg.generated-->
     update users
     <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
       <if test="password != null">
         `password` = #{password,jdbcType=VARCHAR},
       </if>
@@ -67,18 +71,23 @@
         `role` = #{role,jdbcType=VARCHAR},
       </if>
     </set>
-    where username = #{username,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.demo.model.Users">
     <!--@mbg.generated-->
     update users
-    set `password` = #{password,jdbcType=VARCHAR},
+    set username = #{username,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
       `role` = #{role,jdbcType=VARCHAR}
-    where username = #{username,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from users
   </select>
+    <select id="selectidByUsername" resultType="java.lang.Integer">
+        select IFNULL(id,0) from users
+        where username = #{username,jdbcType=VARCHAR}
+    </select>
 </mapper>
