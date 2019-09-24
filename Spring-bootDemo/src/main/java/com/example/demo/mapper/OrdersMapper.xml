@@ -8,6 +8,11 @@
     <result column="deployTime" jdbcType="TIMESTAMP" property="deploytime" />
     <result column="leftTime" jdbcType="TIMESTAMP" property="lefttime" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <association property="orderprice" javaType="com.example.demo.model.Orderprice">
+      <id column="orderno" property="orderno"/>
+      <result column="price" property="price"/>
+    </association>
+
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -16,9 +21,9 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select
-    <include refid="Base_Column_List" />
-    from orders
-    where orderNo = #{orderno,jdbcType=INTEGER}
+    o.<include refid="Base_Column_List" />,price
+    from orders o,orderprice op
+    where o.orderNo = #{orderno,jdbcType=INTEGER} and o.orderNo = op.orderNo
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
@@ -93,11 +98,20 @@
     where orderNo = #{orderno,jdbcType=INTEGER}
   </update>
 
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectFinished" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
-    from orders
+    o.<include refid="Base_Column_List" />,price
+    from orders o,orderprice op
+    where o.orderNo = op.orderNo
   </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        o.<include refid="Base_Column_List" />,price
+        from orders o left join orderprice op
+        on o.orderNo = op.orderNo
+    </select>
+
     <select id="getAllStatus" resultType="java.lang.Integer" parameterType="java.lang.String">
         select
         status

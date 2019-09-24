@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getAllOrders } from '@/api/table'
 
 export default {
   filters: {
@@ -69,8 +69,8 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
+      getAllOrders().then(response => {
+        this.list = response.data
         this.listLoading = false
       })
     }
