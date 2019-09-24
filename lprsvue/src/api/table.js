@@ -1,9 +1,12 @@
 import request from '@/utils/request'
 
-export function getList(params) {
+
+
+export function getOrders(params) {
   return request({
-    url: '/table/list',
+    url: '/api/getOrders',
     method: 'get',
+    baseURL: '/api',
     params
   })
 }
