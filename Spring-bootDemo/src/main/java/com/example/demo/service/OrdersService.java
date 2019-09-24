@@ -23,4 +23,6 @@ public interface OrdersService {
     List<Integer> getAllStatus(String number);
 
     void finishOrder(Orders record);
+
+    List<Orders> selectFinished();
 }

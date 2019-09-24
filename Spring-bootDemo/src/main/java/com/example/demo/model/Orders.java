@@ -1,10 +1,20 @@
 package com.example.demo.model;
 
+import org.springframework.core.OrderComparator;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Orders implements Serializable {
     private Integer orderno;
+
+    public Orderprice getOrderprice() {
+        return orderprice;
+    }
+
+    public void setOrderprice(Orderprice orderprice) {
+        this.orderprice = orderprice;
+    }
 
     public Orders(Integer orderno, String number, Date deploytime, Date lefttime, Integer status) {
         this.orderno = orderno;
@@ -21,6 +31,8 @@ public class Orders implements Serializable {
     private Date lefttime;
 
     private Integer status;
+
+    private Orderprice orderprice;
 
     private static final long serialVersionUID = 1L;
 

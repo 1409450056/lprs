@@ -60,5 +60,10 @@ public class OrdersServicelmpl implements OrdersService {
         orderMapper.finishOrder(record);
     }
 
+    @Override
+    public List<Orders> selectFinished() {
+        return orderMapper.selectFinished();
+    }
+
 
 }

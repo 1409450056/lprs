@@ -73,6 +73,11 @@ public class OrderController {
             }else{
                 data.put("leftTime","");
             }
+            if(o.getOrderprice().getPrice()!=null){
+                data.put("price",o.getOrderprice().getPrice().toString());
+            }else{
+                data.put("price","");
+            }
             data.put("status",o.getStatus().toString());
             jsonObject.put("data",data);
             return jsonObject.toString();
@@ -83,8 +88,8 @@ public class OrderController {
 
     }
 
-    @GetMapping(value = "api/getOrders")
-    public String getOrders() {
+    @GetMapping(value = "api/getAllOrders")
+    public String getAllOrders(){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code","20000");
         List<Orders> orders = orderService.selectAll();
@@ -99,6 +104,32 @@ public class OrderController {
             }else{
                 data.put("leftTime","");
             }
+            if(o.getOrderprice().getPrice()!=null){
+                data.put("price",o.getOrderprice().getPrice().toString());
+            }else{
+                data.put("price","");
+            }
+            data.put("status",o.getStatus().toString());
+            orderList.add(data);
+        }
+        jsonObject.put("data",orderList);
+        return jsonObject.toString();
+    }
+
+
+    @GetMapping(value = "api/getFinishedOrders")
+    public String getFinishedOrders() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code","20000");
+        List<Orders> orders = orderService.selectFinished();
+        List<Map<String,String>> orderList = new ArrayList<>();
+        for(Orders o : orders){
+            Map<String, String> data = new HashMap<>();
+            data.put("orderNo",o.getOrderno().toString());
+            data.put("deployTime",o.getDeploytime().toString());
+            data.put("number",o.getNumber());
+            data.put("leftTime", o.getLefttime().toString());
+            data.put("price",o.getOrderprice().getPrice().toString());
             data.put("status",o.getStatus().toString());
             orderList.add(data);
         }
@@ -121,12 +152,13 @@ public class OrderController {
     public String finishOrder(@RequestBody Orders requestOrder) {
         JSONObject jsonObject = new JSONObject();
         Orders o = orderService.selectByPrimaryKey(requestOrder.getOrderno());
-        if(o.getStatus()==1){
-            jsonObject.put("code",50000);
-            jsonObject.put("message","提交失败，订单已完成");
-            return jsonObject.toString();
-        }
+
         if(o!=null) {
+            if(o.getStatus()==1){
+                jsonObject.put("code",50000);
+                jsonObject.put("message","提交失败，订单已完成");
+                return jsonObject.toString();
+            }
             String number = requestOrder.getNumber();
             Date orderLefttime = requestOrder.getLefttime();
             System.out.println("update" + number + orderLefttime);
