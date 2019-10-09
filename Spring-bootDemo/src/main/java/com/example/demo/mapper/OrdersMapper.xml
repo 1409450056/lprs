@@ -22,8 +22,9 @@
     <!--@mbg.generated-->
     select
     o.<include refid="Base_Column_List" />,price
-    from orders o,orderprice op
-    where o.orderNo = #{orderno,jdbcType=INTEGER} and o.orderNo = op.orderNo
+    from orders o left join orderprice op
+    on o.orderNo = op.orderNo
+    where o.orderNo = #{orderno,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
@@ -119,10 +120,16 @@
         where number = #{number,jdbcType=VARCHAR}
     </select>
     <update id="finishOrder" parameterType="com.example.demo.model.Orders">
-        update orders
+        update orders o, orderprice op
         set
-        leftTime = #{lefttime,jdbcType=TIMESTAMP},
-        `status` = #{status,jdbcType=INTEGER}
-        where orderNo = #{orderno,jdbcType=INTEGER}
+        o.leftTime = #{lefttime,jdbcType=TIMESTAMP},
+        o.status = #{status,jdbcType=INTEGER},
+        op.price = #{orderprice.price,jdbcType=INTEGER}
+        where o.orderNo = #{orderno,jdbcType=INTEGER}
+        and o.orderNo = op.orderNo
     </update>
+
+  <select id="getOrderNo" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select orderNo from orders where number = #{number,jdbcType=VARCHAR} and status = 0
+  </select>
 </mapper>

@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Orderprice;
 import com.example.demo.model.Orders;
 import com.example.demo.service.OrdersService;
+import com.example.demo.utils.calculatePrice;
 import io.swagger.annotations.Api;
 import io.swagger.models.auth.In;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @CrossOrigin
@@ -17,6 +20,7 @@ import java.util.*;
 public class OrderController {
     @Autowired
     private OrdersService orderService;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     @PostMapping(value = "api/addOrder")
     public String addOrder(@RequestBody Orders requestOrder) {
@@ -35,6 +39,12 @@ public class OrderController {
         System.out.println("insert: "+number+" "+orderDeploytime+ " " +  orderStatus);
         Orders aa=new Orders(null,number,orderDeploytime,null,orderStatus);
         orderService.insert(aa);
+
+        Orderprice op = new Orderprice();
+        op.setPrice(0);
+        op.setOrderno(orderService.getOrderNo(requestOrder.getNumber()));
+        orderService.insertPrice(op);
+
         jsonObject.put("code",20000);
         jsonObject.put("message","插入成功");
         return jsonObject.toString();
@@ -91,16 +101,16 @@ public class OrderController {
     @GetMapping(value = "api/getAllOrders")
     public String getAllOrders(){
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code","20000");
+        jsonObject.put("code",20000);
         List<Orders> orders = orderService.selectAll();
         List<Map<String,String>> orderList = new ArrayList<>();
         for(Orders o : orders){
             Map<String, String> data = new HashMap<>();
             data.put("orderNo",o.getOrderno().toString());
-            data.put("deployTime",o.getDeploytime().toString());
+            data.put("deployTime",sdf.format(o.getDeploytime()).toString());
             data.put("number",o.getNumber());
             if(o.getLefttime()!=null) {
-                data.put("leftTime", o.getLefttime().toString());
+                data.put("leftTime", sdf.format(o.getLefttime()).toString());
             }else{
                 data.put("leftTime","");
             }
@@ -120,15 +130,15 @@ public class OrderController {
     @GetMapping(value = "api/getFinishedOrders")
     public String getFinishedOrders() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code","20000");
+        jsonObject.put("code",20000);
         List<Orders> orders = orderService.selectFinished();
         List<Map<String,String>> orderList = new ArrayList<>();
         for(Orders o : orders){
             Map<String, String> data = new HashMap<>();
             data.put("orderNo",o.getOrderno().toString());
-            data.put("deployTime",o.getDeploytime().toString());
+            data.put("deployTime",sdf.format(o.getDeploytime()).toString());
             data.put("number",o.getNumber());
-            data.put("leftTime", o.getLefttime().toString());
+            data.put("leftTime", sdf.format(o.getLefttime()).toString());
             data.put("price",o.getOrderprice().getPrice().toString());
             data.put("status",o.getStatus().toString());
             orderList.add(data);
@@ -163,6 +173,11 @@ public class OrderController {
             Date orderLefttime = requestOrder.getLefttime();
             System.out.println("update" + number + orderLefttime);
             requestOrder.setStatus(1);
+            int price = calculatePrice.getPrice(o.getDeploytime(),o.getLefttime());
+            Orderprice op = new Orderprice();
+            op.setOrderno(o.getOrderno());
+            op.setPrice(22);
+            requestOrder.setOrderprice(op);
             orderService.finishOrder(requestOrder);
             jsonObject.put("code",20000);
             jsonObject.put("message","订单完成");

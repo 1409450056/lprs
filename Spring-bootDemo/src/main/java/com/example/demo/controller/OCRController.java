@@ -2,22 +2,33 @@ package com.example.demo.controller;
 
 import com.baidu.aip.imageclassify.AipImageClassify;
 import com.baidu.aip.ocr.AipOcr;
+import com.baidu.aip.util.Base64Util;
+import com.example.demo.utils.AuthService;
+import com.example.demo.utils.HttpUtil;
+import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Objects;
 
 @CrossOrigin
 @Api(value = "车牌识别")
 @RestController
+
 public class OCRController {
     public static final String APP_ID = "16965760";
     public static final String API_KEY = "RqpVroiLSbzRjOuzstlPNAxx";
     public static final String SECRET_KEY = "oUsGUGdkqmkW15GKmeKSwKXYNQhS6Xsa";
+    String accessToken = null;
+    public OCRController() {
+        accessToken = AuthService.getAuth("lUdZzexrpdhCMxPR4I2WPEpW"
+                ,"c289IroyOLDgEt9YuDzc4Gq9WlKQkqtS");
+
+    }
 
     @ResponseBody
     @PostMapping("api/ocrimg")
@@ -72,6 +83,22 @@ public class OCRController {
             jsonObject = null;
         }
         return jsonObject;
+    }
+
+    public String getCarInfo2(MultipartFile file) throws IOException {
+        String result;
+        String url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/vehicle_detect";
+        try {
+            byte[] imgData = file.getBytes();
+            String imgStr = Base64Util.encode(imgData);
+            String imgParam = URLEncoder.encode(imgStr, "UTF-8");
+            String param = "image=" + imgParam;
+            result = (HttpUtil.post(url,accessToken,param));
+        } catch (Exception e) {
+            System.err.println(e);
+            result = null;
+        }
+        return result;
     }
 }
 

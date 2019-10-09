@@ -1,13 +1,18 @@
 <template>
   <el-table :data="list" style="width: 100%;padding-top: 15px;">
-    <el-table-column label="Order_No" min-width="200">
+    <el-table-column label="Order_No" min-width="100">
       <template slot-scope="scope">
-        {{ scope.row.order_no | orderNoFilter }}
+        {{ scope.row.orderNo | orderNoFilter }}
       </template>
     </el-table-column>
-    <el-table-column label="Price" width="195" align="center">
+    <el-table-column label="Plate" width="170" align="center">
       <template slot-scope="scope">
-        ¥{{ scope.row.price | toThousandFilter }}
+        {{ scope.row.number }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Price" width="170" align="center">
+      <template slot-scope="scope">
+        {{ scope.row.price | toThousandFilter }}
       </template>
     </el-table-column>
     <el-table-column label="Status" width="100" align="center">
@@ -21,7 +26,7 @@
 </template>
 
 <script>
-import { transactionList } from '@/api/remote-search'
+import { getAllOrders } from '@/api/table'
 
 export default {
   filters: {
@@ -50,8 +55,8 @@ export default {
   },
   methods: {
     fetchData() {
-      transactionList().then(response => {
-        this.list = response.data.items.slice(0, 8)
+      getAllOrders().then(response => {
+        this.list = response.data
       })
     }
   }

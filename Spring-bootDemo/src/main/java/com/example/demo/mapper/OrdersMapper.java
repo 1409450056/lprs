@@ -23,6 +23,7 @@ public interface OrdersMapper {
 
     List<Integer> getAllStatus(String number);
 
-
     List<Orders> selectFinished();
+
+    int getOrderNo(String number);
 }
