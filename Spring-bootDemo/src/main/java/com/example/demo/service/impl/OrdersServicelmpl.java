@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.mapper.OrderpriceMapper;
 import com.example.demo.mapper.OrdersMapper;
+import com.example.demo.model.Orderprice;
 import com.example.demo.model.Orders;
 import com.example.demo.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ public class OrdersServicelmpl implements OrdersService {
 
     @Autowired
     private OrdersMapper orderMapper;
+
+    @Autowired private OrderpriceMapper orderpriceMapper;
 
     @Override
     public void deleteByPrimaryKey(int orderNo) {
@@ -65,5 +69,13 @@ public class OrdersServicelmpl implements OrdersService {
         return orderMapper.selectFinished();
     }
 
+    @Override
+    public void insertPrice(Orderprice record) {
+        orderpriceMapper.insert(record);
+    }
 
+    @Override
+    public int getOrderNo(String number){
+        return orderMapper.getOrderNo(number);
+    }
 }

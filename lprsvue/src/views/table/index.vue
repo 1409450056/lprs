@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">修改</el-button>
+          <el-button type="primary" size="small" @click="handleFinished(scope)">完成</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
         </template>
       </el-table-column>
@@ -52,29 +52,25 @@
         <el-form-item label="车牌号">
           <el-input v-model="order.number" placeholder="车牌号" />
         </el-form-item>
-        <el-form-item label="进入时间">
-          <el-input v-model="order.deployTime" placeholder="进入时间" />
-        </el-form-item>
-        <el-form-item label="离开时间">
-          <el-input v-model="order.leftTime" placeholder="离开时间" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-input v-model="order.status" placeholder="状态" />
-        </el-form-item>
-        <el-form-item label="费用">
-          <el-input v-model="order.price" placeholder="费用" />
-        </el-form-item>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">取消</el-button>
         <el-button type="primary" @click="confirmOrder">确认</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogVisible1" title="完成订单">
+      <el-form :model="order" label-width="80px" label-position="left">
+      </el-form>
+      <div style="text-align:right;">
+        <el-button type="danger" @click="dialogVisible1=false">取消</el-button>
+        <el-button type="primary" @click="confirmOrder1">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getAllOrders, deleteOrder, updateOrder, addOrder } from '@/api/table'
+import { getAllOrders, deleteOrder, updateOrder, addOrder, finishOrder } from '@/api/table'
 
 const defaultOrder = {
   orderNo: '',
@@ -91,7 +87,7 @@ export default {
       const statusMap = {
         published: 'success',
         draft: 'gray',
-        deleted: 'danger'
+        0: 'danger'
       }
       return statusMap[status]
     }
@@ -100,6 +96,7 @@ export default {
     return {
       order: Object.assign({}, defaultOrder),
       dialogVisible: false,
+      dialogVisible1: false,
       checkStrictly: false,
       dialogType: 'new',
       list: null,
@@ -119,12 +116,47 @@ export default {
     },
 
     handleAddOrder() {
-      this.list = Object.assign({}, defaultOrder)
+      this.list = Object.assign([], defaultOrder)
       if (this.$refs.tree) {
         this.$refs.tree.setCheckedNodes([])
       }
       this.dialogType = 'new'
       this.dialogVisible = true
+    },
+
+    handleFinished(scope) {
+      this.dialogVisible1 = true
+      this.checkStrictly = true
+      this.order.orderNo = scope.row.orderNo
+      this.order.price = scope.row.price
+      this.order.status = scope.row.status
+      this.$nextTick(() => {
+        this.checkStrictly = false
+      })
+    },
+
+    async confirmOrder1() {
+      await finishOrder(this.order.orderNo, this.order)
+      for (let index = 0; index < this.list.length; index++) {
+        if (this.list[index].orderNo === this.order.orderNo) {
+          this.list.splice(index, 1, Object.assign({}, this.order))
+          break
+        }
+      }
+      const res = await getAllOrders()
+      const listArray = []
+      for (const i in res.data) {
+        listArray.push(res.data[i])
+      }
+      this.list = listArray
+
+      this.dialogVisible1 = false
+      this.$notify({
+        title: 'Success',
+        dangerouslyUseHTMLString: true,
+        message: 'finishOrder',
+        type: 'success'
+      })
     },
 
     handleEdit(scope) {
@@ -160,7 +192,11 @@ export default {
           }
         }
         const res = await getAllOrders()
-        this.list = res.data
+        const listArray = []
+        for (const i in res.data) {
+          listArray.push(res.data[i])
+        }
+        this.list = listArray
       } else {
         await addOrder(this.order)
         const res = await getAllOrders()
@@ -168,22 +204,18 @@ export default {
         // this.rolesList.push(this.role)
       }
 
-      const { number, deployTime, leftTime, status, price } = this.order
+      const { number } = this.order
       this.dialogVisible = false
       this.$notify({
         title: 'Success',
         dangerouslyUseHTMLString: true,
         message: `
             <div>车牌号: ${number}</div>
-            <div>进入时间: ${leftTime}</div>
-            <div>离开时间: ${deployTime}</div>
-            <div>状态: ${status}</div>
-            <div>费用: ${price}</div>
           `,
         type: 'success'
       })
     },
-    handleDelete({ $index,row }) {
+    handleDelete({ $index, row }) {
       this.$confirm('确认删除?', 'Warning', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',

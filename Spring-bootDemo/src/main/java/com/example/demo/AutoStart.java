@@ -26,8 +26,7 @@ public class AutoStart implements CommandLineRunner {
         public void run() {
             int i = 0;
             while (i < 100) {
-                System.out.println(i);
-                i++;
+
             }
         }
     }
@@ -37,8 +36,7 @@ public class AutoStart implements CommandLineRunner {
         public void run() {
             int i = 100;
             while (i < 200) {
-                System.out.println(i);
-                i++;
+
             }
         }
     }

@@ -35,4 +35,12 @@ export function addOrder(data) {
   })
 }
 
+export function finishOrder(orderNo, data) {
+  return request({
+    url: `api/finishOrder?orderno=${orderNo}`,
+    method: 'post',
+    baseURL: '/api',
+    data
+  })
+}
 

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Orderprice;
 import com.example.demo.model.Orders;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public interface OrdersService {
     void finishOrder(Orders record);
 
     List<Orders> selectFinished();
+
+    void insertPrice(Orderprice record);
+
+    int getOrderNo(String number);
 }
