@@ -22,8 +22,9 @@
     <!--@mbg.generated-->
     select
     o.<include refid="Base_Column_List" />,price
-    from orders o,orderprice op
-    where o.orderNo = #{orderno,jdbcType=INTEGER} and o.orderNo = op.orderNo
+    from orders o left join orderprice op
+    on o.orderNo = op.orderNo
+    where o.orderNo = #{orderno,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->

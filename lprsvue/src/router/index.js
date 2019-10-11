@@ -63,7 +63,6 @@ export const constantRoutes = [
   {
     path: '/table',
     component: Layout,
-  
     children: [
       {
         path: 'index',
