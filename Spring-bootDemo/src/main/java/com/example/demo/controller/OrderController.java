@@ -4,6 +4,8 @@ import com.example.demo.model.Orderprice;
 import com.example.demo.model.Orders;
 import com.example.demo.service.OrdersService;
 import com.example.demo.utils.calculatePrice;
+import com.opslab.Opslab;
+import com.opslab.util.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.models.auth.In;
 import org.json.JSONObject;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -23,11 +26,13 @@ public class OrderController {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     @PostMapping(value = "api/addOrder")
-    public String addOrder(@RequestBody Orders requestOrder) {
+    public String addOrder(@RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();
         String number = requestOrder.getNumber();
-        Date orderDeploytime = requestOrder.getDeploytime();
-        Integer orderStatus = requestOrder.getStatus();
+        /*Date orderDeploytime = requestOrder.getDeploytime();
+        Integer orderStatus = requestOrder.getStatus();*/
+        Date orderDeploytime = DateUtil.date(DateUtil.currentDate());
+        Integer orderStatus = 0;
         List<Integer> statusList = orderService.getAllStatus(number);
         for(int i : statusList){
             if(i==0){
@@ -152,6 +157,8 @@ public class OrderController {
         JSONObject jsonObject = new JSONObject();
         String number = requestOrder.getNumber();
         Date orderLefttime = requestOrder.getLefttime();
+        jsonObject.put("code",20000);
+        jsonObject.put("message","订单已修改");
         System.out.println("update"+number+orderLefttime);
         orderService.updateByPrimaryKey(requestOrder);
         return jsonObject.toString();
