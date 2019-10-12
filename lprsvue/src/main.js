@@ -27,7 +27,7 @@ import '@/permission' // permission control
  */
 Vue.use(vDialogs, { instanceName: '$dlg' })
 const uploaderConfig = {
-  uploadFileUrl: 'http://localhost:8080/api/upload',
+  uploadFileUrl: 'http://106.54.238.66:8080/api/upload',
   deleteFileUrl: 'http://localhost:8080/api/deleteimg',
   uploadFileObjName: 'file',
   showMessage: (vue, message) => {

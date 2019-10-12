@@ -11,10 +11,10 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/lprs?unicode=true&serverTimezone=GMT&characterEncoding=utf-8&useSSL=false
     username: root
-    password: 123456
+    password: root
 
 my:
   name: zhou
   age: 20
+spring.resources.static-locations: file:/usr/bin/image
 
-spring.resources.static-locations: file:E://workspace-idea/lprs/Spring-bootDemo/res/

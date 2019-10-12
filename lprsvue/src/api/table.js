@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getAllOrders(params) {
   return request({
-    url: '/api/getAllOrders',
+    url: '/getAllOrders',
     method: 'get',
     baseURL: '/api',
     params
@@ -11,7 +11,7 @@ export function getAllOrders(params) {
 
 export function deleteOrder(orderNo) {
   return request({
-    url: `api/deleteOrder?orderno=${orderNo}`,
+    url: `/deleteOrder?orderno=${orderNo}`,
     method: 'delete',
     baseURL: '/api'
   })
@@ -19,7 +19,7 @@ export function deleteOrder(orderNo) {
 
 export function updateOrder(data) {
   return request({
-    url: '/api/updateOrder',
+    url: '/updateOrder',
     baseURL: '/api',
     method: 'post',
     data
@@ -28,7 +28,7 @@ export function updateOrder(data) {
 
 export function addOrder(data) {
   return request({
-    url: '/api/addOrder',
+    url: '/addOrder',
     baseURL: '/api',
     method: 'post',
     data
@@ -37,7 +37,7 @@ export function addOrder(data) {
 
 export function finishOrder(orderNo, data) {
   return request({
-    url: `api/finishOrder?orderno=${orderNo}`,
+    url: `/finishOrder?orderno=${orderNo}`,
     method: 'post',
     baseURL: '/api',
     data

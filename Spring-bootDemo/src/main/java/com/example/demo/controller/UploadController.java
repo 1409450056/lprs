@@ -24,7 +24,7 @@ public class UploadController {
     @ResponseBody
     @PostMapping("api/upload")
     public UploadResult upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
-        String path = "E:/workspace-idea/lprs/Spring-bootDemo/res/image";
+        String path = "/usr/bin/image";
         OCRController ocr = new OCRController();
         String plate = ocr.getPlate(file);
         JSONObject info = ocr.getCarInfo(file);
@@ -49,9 +49,9 @@ public class UploadController {
                     e.printStackTrace();
                 }
                 //项目url，这里可以使用常量或者去数据字典获取相应的url前缀；
-                String fileUrl = "http://localhost:8080";
+                String fileUrl = "http://106.54.238.66:8080";
                 //文件获取路径
-                fileUrl = fileUrl + request.getContextPath() + "/image/" + fileName;
+                fileUrl = fileUrl + request.getContextPath() + "/" + fileName;
                 numpic.bindPic(plate,fileUrl);
             }
             String fileUrl = numpic.getUrl(plate);
