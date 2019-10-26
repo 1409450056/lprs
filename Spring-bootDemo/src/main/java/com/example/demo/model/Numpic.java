@@ -3,14 +3,20 @@ package com.example.demo.model;
 import java.io.Serializable;
 
 public class Numpic implements Serializable {
+    /**
+     * number
+     */
     private String number;
 
+    /**
+     * url
+     */
     private String url;
 
-    public Numpic(String number, String url) {
-        this.number = number;
-        this.url = url;
-    }
+    /**
+     * mark
+     */
+    private Integer mark=0;
 
     private static final long serialVersionUID = 1L;
 
@@ -28,5 +34,19 @@ public class Numpic implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getMark() {
+        return mark;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
+
+    public Numpic(String number, String url, Integer mark) {
+        this.number = number;
+        this.url = url;
+        this.mark = mark;
     }
 }

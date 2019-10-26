@@ -4,6 +4,7 @@ public class Car {
     private String number;
     private int position = 0;
 
+
     public String getNumber() {
         return number;
     }
@@ -23,6 +24,11 @@ public class Car {
     public Car(String number) {
         this.number = number;
     }
+
+    /*
+     * 更新
+     * */
+
 
     @Override
     public int hashCode() {

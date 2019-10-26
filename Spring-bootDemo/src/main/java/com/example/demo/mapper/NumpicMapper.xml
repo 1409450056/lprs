@@ -4,11 +4,15 @@
   <resultMap id="BaseResultMap" type="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
     <id column="number" jdbcType="VARCHAR" property="number" />
+
     <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="mark" javaType="INTEGER" property="mark"/>
+
+
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    `number`, url
+    `number`, url,mark
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -60,7 +64,39 @@
   <update id="updateByPrimaryKey" parameterType="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
     update numpic
-    set url = #{url,jdbcType=VARCHAR}
+    <set>
+      url = #{url,jdbcType=VARCHAR}
+    </set>
     where `number` = #{number,jdbcType=VARCHAR}
   </update>
+
+
+
+
+  <select id="selectByMark" parameterType="java.lang.Integer" resultType="com.example.demo.model.Numpic">
+    select
+    <include refid="Base_Column_List" />
+    from numpic
+    where mark = #{mark}
+  </select>
+
+
+  <select id="selectAllByMark" resultType="com.example.demo.model.Numpic" >
+    select
+    *
+    from numpic
+    order by mark
+  </select>
+
+  <update id="updateMarkByPrimaryKey" parameterType="com.example.demo.model.Numpic">
+    <!--@mbg.generated-->
+    update numpic
+    <set>
+      mark = #{mark,javaType=INTEGER}
+    </set>
+    where number = '#{number,jdbcType=VARCHAR}'
+  </update>
+
+
+
 </mapper>

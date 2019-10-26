@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MyBatisCodeHelperDatasource">
+    <option name="projectProfile">
+      <ProjectProfile>
+        <option name="addSerializeUid" value="true" />
+        <option name="genSqlFilePath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java/com/example/demo/model" />
+        <option name="javaMapperPackage" value="com.example.demo.mapper" />
+        <option name="javaMapperPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+        <option name="javaModelPackage" value="com.example.demo.model" />
+        <option name="javaModelPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+        <option name="lastDatabaseCrudChooseModuleName" value="demo" />
+        <option name="mapperAnnotaion" value="true" />
+        <option name="moduleNameToPackageAndPathMap">
+          <map>
+            <entry key="demo">
+              <value>
+                <UserPackageAndPathInfoByModule>
+                  <option name="javaMapperPackage" value="com.example.demo.mapper" />
+                  <option name="javaMapperPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+                  <option name="javaModelPacakge" value="com.example.demo.model" />
+                  <option name="javaModelPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+                  <option name="javaServiceInterfacePath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+                  <option name="javaServicePath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+                  <option name="xmlPackage" value="com.example.demo.mapper" />
+                  <option name="xmlPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/resources" />
+                </UserPackageAndPathInfoByModule>
+              </value>
+            </entry>
+          </map>
+        </option>
+        <option name="tableGenerateConfigs">
+          <map>
+            <entry key="lpis:numpic">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="number" />
+                  <option name="javaModelName" value="Numpic" />
+                  <option name="moduleName" value="demo" />
+                  <option name="sequenceColumn" value="" />
+                  <option name="sequenceId" value="" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+          </map>
+        </option>
+        <option name="xmlMapperPackage" value="com.example.demo.mapper" />
+        <option name="xmlMapperPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/resources" />
+      </ProjectProfile>
+    </option>
+  </component>
+</project>
