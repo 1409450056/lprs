@@ -3,7 +3,7 @@ package com.example.demo.utils;
 import java.util.Random;
 
 public class GenerateNumber {
-    public  String generateCarID() {
+    public static String generateCarID() {
 
         char[] provinceAbbr = { // 省份简称 4+22+5+3
                 '京', '津', '沪', '渝',

@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import { decrypt } from '@/utils/rsaEncrypt'
 
 const state = {
   token: getToken(),
@@ -30,19 +31,23 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
+    login({ commit }, userInfo) {
+      const username = userInfo.username
+      const password = userInfo.password
+      const code = userInfo.code
+      const uuid = userInfo.uuid
+      const rememberMe = userInfo.rememberMe
+      return new Promise((resolve, reject) => {
+        login(username, password, code, uuid).then(response  => {
+           const { data } = response
+          commit('SET_TOKEN', data.token)
+          setToken(data.token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       })
-    })
-  },
+    },
 
   // get user info
   getInfo({ commit, state }) {

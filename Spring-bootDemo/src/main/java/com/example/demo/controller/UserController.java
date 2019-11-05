@@ -1,18 +1,27 @@
 package com.example.demo.controller;
 
+import cn.hutool.core.util.IdUtil;
+import com.example.demo.annotation.AnonymousAccess;
+import com.example.demo.model.AuthUser;
+import com.example.demo.model.ImgResult;
 import com.example.demo.model.Users;
 import com.example.demo.result.Result;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.example.demo.utils.EncryptUtils;
+import com.example.demo.utils.Exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.wf.captcha.ArithmeticCaptcha;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 import com.example.demo.service.*;
-import springfox.documentation.spring.web.json.Json;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -20,22 +29,38 @@ import java.util.*;
 @Api(value = "登陆")
 @RestController
 public class UserController {
+    private String codeKey;
+    private final RedisService redisService;
     @Autowired
     private UsersService userService;
 
     @Autowired
     private ObjectMapper jacksonObjectMapper;
 
+    public UserController(RedisService redisService ) {
+        this.redisService = redisService;
+    }
+
     @PostMapping(value = "api/login")
-    public Result login(@RequestBody Users requestUser) {
+    @AnonymousAccess
+    public Result login(@Validated @RequestBody AuthUser authorizationUser) throws Exception {
         // 对 html 标签进行转义，防止 XSS 攻击
+        String code = redisService.getCodeVal(authorizationUser.getUuid());
+        redisService.delete(authorizationUser.getUuid());
+        if (StringUtils.isBlank(code)) {
+            return new Result(60204, null, "验证码已过期");
+        }
+        if (StringUtils.isBlank(authorizationUser.getCode()) || !authorizationUser.getCode().equalsIgnoreCase(code)) {
+            return new Result(60204, null, "验证码错误");
+
+        }
         String username, password, token;
-        username = HtmlUtils.htmlEscape(requestUser.getUsername());
+        username = HtmlUtils.htmlEscape(authorizationUser.getUsername());
         Integer id = userService.findIdByUsername(username);
         Users user = userService.findByid(id);
         if (user!=null) {
-            password = user.getPassword();
-            if (Objects.equals(password, requestUser.getPassword())) {
+            password = EncryptUtils.desEncrypt(authorizationUser.getPassword());
+            if (Objects.equals(password, user.getPassword())) {
                 System.out.println("login: "+username + " " + password);
                 Map<String, String> data = new HashMap<>();
                 if(userService.getRole(id).equals("admin")) {
@@ -48,15 +73,39 @@ public class UserController {
             }
         }
         String message = "账号密码错误";
-        Map<String, String> data = new HashMap<>();
-        return new Result(60204, data, "账号密码错误");
+
+        return new Result(60204, null, "账号密码错误");
+    }
+
+    @ApiOperation("获取验证码")
+    @AnonymousAccess
+    @GetMapping(value = "api/code")
+    public String getCode(){
+        // 算术类型 https://gitee.com/whvse/EasyCaptcha
+        ArithmeticCaptcha captcha = new ArithmeticCaptcha(111, 36);
+        // 几位数运算，默认是两位
+        captcha.setLen(2);
+        // 获取运算的结果：5
+        String result = captcha.text();
+        String uuid = codeKey + IdUtil.simpleUUID();
+        redisService.saveCode(uuid,result);
+        //return new ImgResult(captcha.toBase64(),uuid);
+          Map<String, String> data = new HashMap<>();
+        List<Map<String,String>> list = new ArrayList<>();
+
+        data.put("img",captcha.toBase64());
+        data.put("uuid",uuid);
+        JSONObject  jsonObject = new JSONObject();
+        jsonObject.put("code",20000);
+        jsonObject.put("data",data);
+        return jsonObject.toString();
     }
 
     @PostMapping(value = "api/register")
-    public Result register(@RequestBody Users requestUser) {
+    public Result register(@RequestBody Users requestUser) throws Exception {
         String username = requestUser.getUsername();
         // username = HtmlUtils.htmlEscape(username);
-        String password = requestUser.getPassword();
+        String password = EncryptUtils.desEncrypt(requestUser.getPassword());
         System.out.println("注册: " + username + " " + password);
         int id = userService.findIdByUsername(username);
         Users user = userService.findByid(id);
