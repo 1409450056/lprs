@@ -15,9 +15,14 @@ public interface NumpicService {
 
     List<Numpic> selectByMark(int mark);
 
-    List<Numpic> selectAllByMark();
+    List<Numpic> selectAllByMarkOrder();
 
     int updateMarkByPrimaryKey(Numpic record);
 
+    String selectUrlByPrimaryKey(String number);
+
+    int selectMarkByPrimaryKey(String number);
+
+    Numpic selectByPrimaryKey(String number);
 
 }

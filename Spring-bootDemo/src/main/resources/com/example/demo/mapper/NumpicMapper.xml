@@ -86,7 +86,23 @@
 
     <update id="updateMarkByPrimaryKey" parameterType="com.example.demo.model.Numpic">
       update numpic
-      set mark = #{mark}
+      set mark = #{mark,javaType=integer},
+      url=#{url,javaType=string}
       where number = #{number,jdbcType=VARCHAR}
     </update>
+
+    <select id="selectUrlByPrimaryKey" resultType="java.lang.String">
+    select url
+    from numpic
+    where number = #{number,jdbcType=VARCHAR}
+    </select>
+
+  <select id="selectMarkByPrimaryKey" resultType="java.lang.String">
+    select mark
+    from numpic
+    where number = #{number,jdbcType=VARCHAR}
+
+  </select>
+
+
 </mapper>

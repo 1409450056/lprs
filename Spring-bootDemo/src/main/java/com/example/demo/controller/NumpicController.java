@@ -31,17 +31,17 @@ public class NumpicController {
     * 按标记查找
     * */
     @GetMapping(value = "api/selectByMark")
-    public String selectByMark(@RequestBody  int mark) throws ParseException {
+    public String selectByMark(@RequestParam int mark) throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
-
+        jsonObject.put("code",20000);
         List<Numpic> ns=numpic.selectByMark(mark);
        // Orders o = orderService.selectByPrimaryKey(orderNo);
         List<Map<String,String>> NumpicList = new ArrayList<>();
         for(Numpic n : ns){
             Map<String, String> data = new HashMap<>();
-            data.put("number",n.getNumber());
-            data.put("url",n.getUrl());
+            data.put("number",n.getNumber().toString());
+            data.put("url",n.getUrl().toString());
             data.put("mark",n.getMark().toString());
 
 
@@ -54,21 +54,19 @@ public class NumpicController {
     /*
     * 按标记降序查找
     * */
-    @GetMapping(value = "api/selectAllByMark")
-    public String selectAllByMark() throws ParseException {
+    @GetMapping(value = "api/selectAllByMarkOrder")
+    public String selectAllByMarkOrder() throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
-
-        List<Numpic> ns=numpic.selectAllByMark();
+        jsonObject.put("code",20000);
+        List<Numpic> ns=numpic.selectAllByMarkOrder();
         // Orders o = orderService.selectByPrimaryKey(orderNo);
         List<Map<String,String>> NumpicList = new ArrayList<>();
         for(Numpic n : ns){
             Map<String, String> data = new HashMap<>();
-            data.put("number",n.getNumber());
-            data.put("url",n.getUrl());
+            data.put("number",n.getNumber().toString());
+            data.put("url",n.getUrl().toString());
             data.put("mark",n.getMark().toString());
-
-
             NumpicList.add(data);
         }
         jsonObject.put("data",NumpicList);
@@ -78,22 +76,81 @@ public class NumpicController {
     /*
     * 按车牌号修改标记值
     * */
-    @GetMapping(value = "api/updateMarkByPrimaryKey")
+    @PostMapping(value = "api/updateMarkByPrimaryKey")
     public String updateMarkByPrimaryKey(@RequestBody  Numpic requestNupic) throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
         int a=numpic.updateMarkByPrimaryKey(requestNupic);
-        if(a==1){
+        System.out.println("i========= " + a);
+            jsonObject.put("code",20000);
             jsonObject.put("message","订单已修改");
 
-        }else{
 
+          /*  jsonObject.put("code",50000);
             jsonObject.put("message","订单未能修改或修改次数超过一");
-        }
+        */
         return jsonObject.toString();
     }
 
 
+
+    @GetMapping(value = "api/selectByPrimaryKey")
+    public String selectByPrimaryKey(@RequestParam String number) throws ParseException {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",20000);
+        Numpic ns=numpic.selectByPrimaryKey(number);
+        // Orders o = orderService.selectByPrimaryKey(orderNo);
+        List<Map<String,String>> NumpicList = new ArrayList<>();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("number",ns.getNumber()+"");
+        data.put("url",ns.getUrl().toString());
+        data.put("mark",ns.getMark().toString());
+        NumpicList.add(data);
+
+        jsonObject.put("data",NumpicList);
+        return jsonObject.toString();
+    }
+
+
+    @GetMapping(value = "api/selectUrlByPrimaryKey")
+    public String selectUrlByPrimaryKey(@RequestParam String number) throws ParseException {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",20000);
+        String ns=numpic.selectUrlByPrimaryKey(number);
+        // Orders o = orderService.selectByPrimaryKey(orderNo);
+        List<Map<String,String>> NumpicList = new ArrayList<>();
+
+        Map<String, String> data = new HashMap<>();
+      //  data.put("number",ns.getNumber().toString());
+        data.put("url",ns.toString());
+       // data.put("mark",ns.getMark().toString());
+        NumpicList.add(data);
+
+        jsonObject.put("data",NumpicList);
+        return jsonObject.toString();
+    }
+
+    @GetMapping(value = "api/selectMarkByPrimaryKey")
+    public String selectMarkByPrimaryKey(@RequestParam String number) throws ParseException {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",20000);
+        int ns=numpic.selectMarkByPrimaryKey(number);
+        // Orders o = orderService.selectByPrimaryKey(orderNo);
+        List<Map<String,String>> NumpicList = new ArrayList<>();
+
+        Map<String, String> data = new HashMap<>();
+      //  data.put("number",ns.getNumber().toString());
+     //   data.put("url",ns.getUrl().toString());
+        data.put("mark",ns+"");
+        NumpicList.add(data);
+
+        jsonObject.put("data",NumpicList);
+        return jsonObject.toString();
+    }
 }
 
 
