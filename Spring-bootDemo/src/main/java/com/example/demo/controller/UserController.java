@@ -141,7 +141,7 @@ public class UserController {
 
     @ResponseBody
     @GetMapping(value = "api/getUsers")
-    public String getUsers() {
+    public String getUsers() throws Exception {
         JSONObject  jsonObject = new JSONObject();
         jsonObject.put("code",20000);
         List<Users> users = userService.findAll();
@@ -151,7 +151,7 @@ public class UserController {
             data.put("id",u.getId().toString());
             data.put("key",u.getRole());
             data.put("username",u.getUsername());
-            data.put("password",u.getPassword());
+            data.put("password",EncryptUtils.desDecrypt(u.getPassword()));
             list.add(data);
         }
         jsonObject.put("data",list);

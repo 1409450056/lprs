@@ -1,9 +1,12 @@
 package com.example.demo;
 
 import com.example.demo.service.BackgroundService;
+import com.example.demo.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class AutoStart implements CommandLineRunner {
@@ -11,7 +14,7 @@ public class AutoStart implements CommandLineRunner {
 
 
     @Autowired
-    BackgroundService bgs;
+    OrdersService oss;
 
     @Override
     public void run(String... args) throws Exception {
@@ -19,6 +22,8 @@ public class AutoStart implements CommandLineRunner {
         CarLeftThread ct = new CarLeftThread();
        // gT.start();
        // ct.start();
+List sb = oss.selectAll();
+System.out.println(sb);
     }
 
     class generateNumberThread extends Thread {

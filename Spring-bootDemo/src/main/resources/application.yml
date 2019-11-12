@@ -9,7 +9,7 @@ spring:
       enabled: true
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lprs?unicode=true&serverTimezone=GMT&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://192.144.152.148:3306/lprs?unicode=true&serverTimezone=GMT&characterEncoding=utf-8&useSSL=false
     username: root
     password: root
   data:
@@ -20,7 +20,7 @@ spring:
   redis:
     #数据库索引
     database: 0
-    host: 127.0.0.1
+    host: 192.144.152.148
     port: 6379
     password:
     #连接超时时间
