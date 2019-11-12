@@ -76,14 +76,14 @@ public class NumpicController {
     /*
     * 按车牌号修改标记值
     * */
-    @PostMapping(value = "api/updateMarkByPrimaryKey")
-    public String updateMarkByPrimaryKey(@RequestBody  Numpic requestNupic) throws ParseException {
+    @PostMapping(value = "api/updateAllByNumber")
+    public String updateAllByNumber(@RequestBody  Numpic requestNupic) throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
-        int a=numpic.updateMarkByPrimaryKey(requestNupic);
-        System.out.println("i========= " + a);
-            jsonObject.put("code",20000);
-            jsonObject.put("message","订单已修改");
+        numpic.updateMarkByNumber(requestNupic);
+       // System.out.println("i========= " + a);
+        jsonObject.put("code",20000);
+        jsonObject.put("message","车辆信息已修改");
 
 
           /*  jsonObject.put("code",50000);
@@ -151,6 +151,39 @@ public class NumpicController {
         jsonObject.put("data",NumpicList);
         return jsonObject.toString();
     }
+
+
+    @PostMapping(value = "api/addNumpic")
+    public String addNumpic(@RequestBody Numpic requestNumpic) throws ParseException {
+        JSONObject jsonObject = new JSONObject();
+
+
+        jsonObject.put("code",20000);
+        jsonObject.put("message","插入成功");
+        numpic.insertNumpic(requestNumpic);
+
+        return jsonObject.toString();
+    }
+
+
+    @DeleteMapping(value = "api/deleteNumpic")
+    public String deleteNumpic(@RequestParam String number) {
+        JSONObject jsonObject = new JSONObject();
+        Numpic o = numpic.selectByPrimaryKey(number);
+        if(o!=null) {
+            numpic.delectNumpic(number);
+            System.out.println("删除车辆车号:"+number);
+            jsonObject.put("code",20000);
+            jsonObject.put("message","删除成功");
+            return jsonObject.toString();
+        }
+        jsonObject.put("code",50000);
+        jsonObject.put("message","删除失败，车辆不存在");
+        return jsonObject.toString();
+
+    }
+
+
 }
 
 

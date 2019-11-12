@@ -37,8 +37,8 @@
   </delete>
   <insert id="insert" parameterType="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
-    insert into numpic (`number`, url)
-    values (#{number,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR})
+    insert into numpic(`number`, url, `mark`)
+    values (#{number,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{mark,javaType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
@@ -112,9 +112,9 @@
   <update id="updateMarkByPrimaryKey" parameterType="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
     update numpic
-    set `url` = '#{url,jdbcType=VARCHAR}',
+    set `url` = #{url,jdbcType=VARCHAR},
       `mark` = #{mark,javaType=INTEGER}
-    where `number` = '#{number,jdbcType=VARCHAR}'
+    where `number` = #{number,jdbcType=VARCHAR}
   </update>
 
   <select id="selectUrlByPrimaryKey" resultType="java.lang.String">

@@ -52,9 +52,5 @@ public class Numpic implements Serializable {
         this.mark = mark;
     }
 
-    public Numpic(String url,Integer mark){
-        this.url=url;
-        this.mark=mark;
-        
-    }
+
 }

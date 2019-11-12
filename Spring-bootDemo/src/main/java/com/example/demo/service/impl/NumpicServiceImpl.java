@@ -48,7 +48,7 @@ public class NumpicServiceImpl implements NumpicService {
     }
 
     @Override
-    public int updateMarkByPrimaryKey(Numpic record) {
+    public int updateMarkByNumber(Numpic record) {
         return numpicMapper.updateMarkByPrimaryKey(record);
     }
 
@@ -66,6 +66,16 @@ public class NumpicServiceImpl implements NumpicService {
     @Override
     public Numpic selectByPrimaryKey(String number) {
         return numpicMapper.selectByPrimaryKey(number);
+    }
+
+    @Override
+    public void insertNumpic(Numpic record) {
+        numpicMapper.insert(record);
+    }
+
+    @Override
+    public void delectNumpic(String number) {
+        numpicMapper.deleteByPrimaryKey(number);
     }
 
 

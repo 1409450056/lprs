@@ -17,7 +17,7 @@ public interface NumpicService {
 
     List<Numpic> selectAllByMarkOrder();
 
-    int updateMarkByPrimaryKey(Numpic record);
+    int updateMarkByNumber(Numpic record);
 
     String selectUrlByPrimaryKey(String number);
 
@@ -25,4 +25,7 @@ public interface NumpicService {
 
     Numpic selectByPrimaryKey(String number);
 
+    void insertNumpic(Numpic record);
+
+    void delectNumpic(String number);
 }

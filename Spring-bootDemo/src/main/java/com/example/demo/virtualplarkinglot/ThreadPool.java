@@ -1,16 +1,35 @@
 package com.example.demo.virtualplarkinglot;
 
+import com.example.demo.controller.OCRController;
+import com.example.demo.controller.ParklotController;
+import com.example.demo.model.Parklot;
+import com.example.demo.service.ParklotService;
+import com.example.demo.service.impl.ParklotServicelmpl;
+import com.sun.org.apache.xpath.internal.objects.XNumber;
+import com.sun.xml.internal.ws.api.pipe.ContentType;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static com.sun.xml.internal.ws.api.pipe.ContentType.*;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
+
 @Component
 public class ThreadPool implements CommandLineRunner {
+
+
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -20,6 +39,32 @@ public class ThreadPool implements CommandLineRunner {
 		ThreadPoolExecutor tpe = new ThreadPoolExecutor(3, 50, 50, TimeUnit.MILLISECONDS, bq);
 
 
+
+
+	//    PlarkingLot.Initax1(ParklotServicelmpl.selectAllNo());
+	/*file格式转MultipartFile格式
+	* */
+		String path="C:\\Users\\A酱\\Desktop\\11111\\11.jpg";
+		File file=new File(path);
+		FileInputStream fileInputStream=new FileInputStream(file);
+		MultipartFile multipartFile=new MockMultipartFile("copy"+file.getName(),file.getName(), APPLICATION_OCTET_STREAM.toString(),fileInputStream);
+		JSONObject jsonObject = new JSONObject();
+		String number1 =OCRController.getPlate(multipartFile);
+		System.out.println(number1);
+
+
+		//List<Parklot> aa= ParklotController.getNullpark();
+
+
+
+
+
+	//	jsonObject=OCRController.getCarInfo(multipartFile);
+	//	jsonObject = jsonObject.getJSONObject("words_result");
+	//	String number = jsonObject.getString("number");
+	//	System.out.println(number);
+
+	//	JSONObject jo =JSONObject.
 
 
 		// 创建3个任务
@@ -78,7 +123,9 @@ public class ThreadPool implements CommandLineRunner {
 	
 	
 	class TempThread implements Runnable {
-		
+
+
+
 		boolean []a= PlarkingLot.getA();
 //		ArrayList<String> list=PlarkingLot.getList();
 		String[] num=PlarkingLot.getB();
@@ -119,6 +166,10 @@ public class ThreadPool implements CommandLineRunner {
 
 		    	if(flag==true) {
 		    		System.out.println("停车成功，" +"停入车位为"+i+"号车位 "  + "停入车辆车牌号："+carnumber);
+
+
+
+
 		    		PlarkingLot.a=a;
 		    //		PlarkingLot.list=list;
 		    		PlarkingLot.setB(num);

@@ -6,9 +6,9 @@
         <option name="addSerializeUid" value="true" />
         <option name="genSqlFilePath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java/com/example/demo/model" />
         <option name="javaMapperPackage" value="com.example.demo.mapper" />
-        <option name="javaMapperPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+        <option name="javaMapperPath" value="C:\Users\A酱\Desktop\lprs-master\Spring-bootDemo\src" />
         <option name="javaModelPackage" value="com.example.demo.model" />
-        <option name="javaModelPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+        <option name="javaModelPath" value="C:\Users\A酱\Desktop\lprs-master\Spring-bootDemo\src" />
         <option name="lastDatabaseCrudChooseModuleName" value="demo" />
         <option name="mapperAnnotaion" value="true" />
         <option name="moduleNameToPackageAndPathMap">
@@ -17,13 +17,11 @@
               <value>
                 <UserPackageAndPathInfoByModule>
                   <option name="javaMapperPackage" value="com.example.demo.mapper" />
-                  <option name="javaMapperPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+                  <option name="javaMapperPath" value="C:\Users\A酱\Desktop\lprs-master\Spring-bootDemo\src" />
                   <option name="javaModelPacakge" value="com.example.demo.model" />
-                  <option name="javaModelPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
-                  <option name="javaServiceInterfacePath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
-                  <option name="javaServicePath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/java" />
+                  <option name="javaModelPath" value="C:\Users\A酱\Desktop\lprs-master\Spring-bootDemo\src" />
                   <option name="xmlPackage" value="com.example.demo.mapper" />
-                  <option name="xmlPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/resources" />
+                  <option name="xmlPath" value="C:\Users\A酱\Desktop\lprs-master\Spring-bootDemo\src\main\java" />
                 </UserPackageAndPathInfoByModule>
               </value>
             </entry>
@@ -43,10 +41,22 @@
                 </TableGenerateConfig>
               </value>
             </entry>
+            <entry key="lprs:parklot">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="" />
+                  <option name="javaModelName" value="Parklot" />
+                  <option name="moduleName" value="demo" />
+                  <option name="sequenceColumn" value="" />
+                  <option name="sequenceId" value="" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
           </map>
         </option>
         <option name="xmlMapperPackage" value="com.example.demo.mapper" />
-        <option name="xmlMapperPath" value="$PROJECT_DIR$/Spring-bootDemo/src/main/resources" />
+        <option name="xmlMapperPath" value="C:\Users\A酱\Desktop\lprs-master\Spring-bootDemo\src\main\java" />
       </ProjectProfile>
     </option>
   </component>
