@@ -1,6 +1,10 @@
 <template>
   <div class="app-container">
     <el-button type="primary" @click="handleAddOrder">添加订单</el-button>
+    <div style = "margin-left:50px;display:inline">
+      <el-input v-model="order.number" maxlength="7" placeholder="输入车牌号搜索" style="width: 200px;"/>
+      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="selectByNumber">搜索</el-button>
+    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -50,16 +54,19 @@
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'修改订单':'新订单'">
       <el-form :model="order" label-width="80px" label-position="left">
         <el-form-item label="车牌号">
-          <el-input v-model="order.number" placeholder="车牌号" />
+          <el-input v-model="order.number" maxlength="7" placeholder="车牌号" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">取消</el-button>
+        <el-button type="danger" @click="fetchData">取消</el-button>
         <el-button type="primary" @click="confirmOrder">确认</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="dialogVisible1" title="完成订单">
+    <el-dialog :visible.sync="dialogVisible1" title="请支付费用以完成订单">
       <el-form :model="order" label-width="80px" label-position="left">
+        <template>
+          <div><img src="@/assets/pay_images/zfbpay.png" height="315" width="315"/></div>
+        </template>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible1=false">取消</el-button>
@@ -70,7 +77,7 @@
 </template>
 
 <script>
-import { getAllOrders, deleteOrder, updateOrder, addOrder, finishOrder } from '@/api/table'
+import { getAllOrders, deleteOrder, updateOrder, addOrder, finishOrder, selectByNumber } from '@/api/table'
 
 const defaultOrder = {
   orderNo: '',
@@ -109,10 +116,33 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
+      this.dialogVisible = false
       getAllOrders().then(response => {
         this.list = response.data
         this.listLoading = false
       })
+    },
+
+    selectByNumber() {
+      // selectByOrderNo(this.order.orderNo).then(response => {
+      //   this.list = response.data
+      //   this.listLoading = false
+      //   alert(list)
+
+      // })
+      this.listLoading = true
+      selectByNumber(encodeURI(encodeURI(this.order.number))).then(response => {
+        const listArray = []
+        for (const i in response.data) {
+          listArray.push(response.data[i])
+        }
+        this.list = listArray
+        this.listLoading = false
+      })
+      this.listLoading = false
+      //alert(this.list)
+
+
     },
 
     handleAddOrder() {
@@ -198,22 +228,35 @@ export default {
         }
         this.list = listArray
       } else {
-        await addOrder(this.order)
-        const res = await getAllOrders()
-        this.list = res.data
-        // this.rolesList.push(this.role)
-      }
+        if (this.order.number.length > 0) {
+          await addOrder(this.order)
+          const res = await getAllOrders()
+          this.list = res.data
+          // this.rolesList.push(this.role)
 
-      const { number } = this.order
-      this.dialogVisible = false
-      this.$notify({
-        title: 'Success',
-        dangerouslyUseHTMLString: true,
-        message: `
-            <div>车牌号: ${number}</div>
-          `,
-        type: 'success'
-      })
+          const { number } = this.order
+          this.dialogVisible = false
+          this.$notify({
+            title: 'Success',
+            dangerouslyUseHTMLString: true,
+            message: `
+                <div>车牌号: ${number}</div>
+              `,
+            type: 'success'
+          })
+        } else {
+          this.fetchData()
+          this.dialogVisible = false
+          this.$notify({
+            title: 'Fail',
+            dangerouslyUseHTMLString: true,
+            message: `
+                <div>车牌号不能为空，请确认好重新添加</div>
+              `,
+            type: 'fail'
+          })
+        }
+      }
     },
     handleDelete({ $index, row }) {
       this.$confirm('确认删除?', 'Warning', {
@@ -228,6 +271,7 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
+          this.fetchData()
         })
         .catch(err => { console.error(err) })
     }

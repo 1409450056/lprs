@@ -26,4 +26,6 @@ public interface OrdersMapper {
     List<Orders> selectFinished();
 
     int getOrderNo(String number);
+
+    Orders selectByPrimaryKey1(String number);
 }

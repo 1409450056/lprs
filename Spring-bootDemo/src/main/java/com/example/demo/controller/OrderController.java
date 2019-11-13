@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -69,10 +70,14 @@ public class OrderController {
     }
 
 
-    @GetMapping(value = "api/selectOrderBynumber")
-    public String selectByOrderNo(@RequestParam int orderNo) {
+    @GetMapping(value = "api/selectByNumber")
+    public String selectByNumber(@RequestParam(value = "number") String number) throws UnsupportedEncodingException {
         JSONObject jsonObject = new JSONObject();
-        Orders o = orderService.selectByPrimaryKey(orderNo);
+        number = java.net.URLDecoder.decode(number,"UTF-8");
+        System.out.println(number);
+        Orders o = orderService.selectByPrimaryKey1(number);
+        System.out.println(o);
+        List<Map<String,String>> orderList = new ArrayList<>();
         if(o!=null) {
             jsonObject.put("code",20000);
             Map<String, String> data = new HashMap<>();
@@ -90,7 +95,8 @@ public class OrderController {
                 data.put("price","");
             }
             data.put("status",o.getStatus().toString());
-            jsonObject.put("data",data);
+            orderList.add(data);
+            jsonObject.put("data",orderList);
             return jsonObject.toString();
         }
         jsonObject.put("code",50000);
