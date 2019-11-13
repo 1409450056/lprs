@@ -30,6 +30,8 @@ public class OCRController {
 
     }
 
+
+
     @ResponseBody
     @PostMapping("api/ocrimg")
     public String ocrimg(@RequestParam("file") MultipartFile file) throws IOException {
@@ -52,7 +54,8 @@ public class OCRController {
         return number;
     }
 
-    public String getPlate(MultipartFile file) throws IOException {
+
+    public static String getPlate(MultipartFile file) throws IOException {
         String number;
         try {
             HashMap<String, String> options = new HashMap<String, String>();
@@ -70,7 +73,9 @@ public class OCRController {
         }
         return number;
     }
-    public JSONObject getCarInfo(MultipartFile file) throws IOException {
+
+
+    public static JSONObject getCarInfo(MultipartFile file) throws IOException {
         JSONObject jsonObject = null;
         try {
             HashMap<String, String> options = new HashMap<String, String>();

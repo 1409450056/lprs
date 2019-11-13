@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.NumpicMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.Numpic">
+    <!--@mbg.generated-->
+    <!--@Table numpic-->
+    <id column="number" jdbcType="VARCHAR" property="number" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="mark" jdbcType="INTEGER" property="mark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    `number`, url, mark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from numpic
+    where `number` = #{number,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from numpic
+    where `number` = #{number,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="number" keyProperty="number" parameterType="com.example.demo.model.Numpic" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into numpic (url, mark)
+    values (#{url,jdbcType=VARCHAR}, #{mark,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="number" keyProperty="number" parameterType="com.example.demo.model.Numpic" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into numpic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="url != null">
+        url,
+      </if>
+      <if test="mark != null">
+        mark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        #{mark,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.model.Numpic">
+    <!--@mbg.generated-->
+    update numpic
+    <set>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        mark = #{mark,jdbcType=INTEGER},
+      </if>
+    </set>
+    where `number` = #{number,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.model.Numpic">
+    <!--@mbg.generated-->
+    update numpic
+    set url = #{url,jdbcType=VARCHAR}
+    where `number` = #{number,jdbcType=VARCHAR}
+  </update>
+
+
+    <select id="selectByMark" resultType="com.example.demo.model.Numpic">
+      select
+      <include refid="Base_Column_List" />
+      from numpic
+      where mark = #{mark}
+    </select>
+
+  <select id="selectAllByMark" resultType="int">
+    select
+    *
+    from numpic
+    order by mark
+  </select>
+
+    <update id="updateMarkByPrimaryKey" parameterType="com.example.demo.model.Numpic">
+      update numpic
+      set mark = #{mark,javaType=integer},
+      url=#{url,javaType=string}
+      where number = #{number,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectUrlByPrimaryKey" resultType="java.lang.String">
+    select url
+    from numpic
+    where number = #{number,jdbcType=VARCHAR}
+    </select>
+
+  <select id="selectMarkByPrimaryKey" resultType="java.lang.String">
+    select mark
+    from numpic
+    where number = #{number,jdbcType=VARCHAR}
+
+  </select>
+
+
+</mapper>

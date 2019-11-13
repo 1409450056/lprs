@@ -4,12 +4,15 @@ import com.example.demo.model.Orderprice;
 import com.example.demo.model.Orders;
 import com.example.demo.service.OrdersService;
 import com.example.demo.utils.calculatePrice;
+import com.opslab.Opslab;
+import com.opslab.util.DateUtil;
 import io.swagger.annotations.Api;
+import io.swagger.models.auth.In;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.HtmlUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,13 +25,16 @@ public class OrderController {
     private OrdersService orderService;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
+    /*
+    * 增加
+    * */
     @PostMapping(value = "api/addOrder")
     public String addOrder(@RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();
         String number = requestOrder.getNumber();
         /*Date orderDeploytime = requestOrder.getDeploytime();
         Integer orderStatus = requestOrder.getStatus();*/
-        Date orderDeploytime = new Date();
+        Date orderDeploytime = DateUtil.date(DateUtil.currentDate());
         Integer orderStatus = 0;
         List<Integer> statusList = orderService.getAllStatus(number);
         for(int i : statusList){
@@ -52,8 +58,12 @@ public class OrderController {
         return jsonObject.toString();
     }
 
+
+    /*
+     * 删除
+     * */
     @DeleteMapping(value = "api/deleteOrder")
-    public String deleteOrder(@RequestParam(value = "orderno") int orderNo) {
+    public String deleteOrder(@RequestParam int orderNo) {
         JSONObject jsonObject = new JSONObject();
         Orders o = orderService.selectByPrimaryKey(orderNo);
         if(o!=null) {
@@ -69,15 +79,13 @@ public class OrderController {
 
     }
 
-
-    @GetMapping(value = "api/selectByNumber")
-    public String selectByNumber(@RequestParam(value = "number") String number) throws UnsupportedEncodingException {
+    /*
+     * 查
+     * */
+    @GetMapping(value = "api/selectOrderBynumber")
+    public String selectByOrderNo(@RequestParam int orderNo) {
         JSONObject jsonObject = new JSONObject();
-        number = java.net.URLDecoder.decode(number,"UTF-8");
-        System.out.println(number);
-        Orders o = orderService.selectByPrimaryKey1(number);
-        System.out.println(o);
-        List<Map<String,String>> orderList = new ArrayList<>();
+        Orders o = orderService.selectByPrimaryKey(orderNo);
         if(o!=null) {
             jsonObject.put("code",20000);
             Map<String, String> data = new HashMap<>();
@@ -95,8 +103,7 @@ public class OrderController {
                 data.put("price","");
             }
             data.put("status",o.getStatus().toString());
-            orderList.add(data);
-            jsonObject.put("data",orderList);
+            jsonObject.put("data",data);
             return jsonObject.toString();
         }
         jsonObject.put("code",50000);
@@ -105,6 +112,9 @@ public class OrderController {
 
     }
 
+    /*
+     * 查
+     * */
     @GetMapping(value = "api/getAllOrders")
     public String getAllOrders(){
         JSONObject jsonObject = new JSONObject();
@@ -134,6 +144,9 @@ public class OrderController {
     }
 
 
+    /*
+     * 封装查
+     * */
     @GetMapping(value = "api/getFinishedOrders")
     public String getFinishedOrders() {
         JSONObject jsonObject = new JSONObject();
@@ -154,6 +167,9 @@ public class OrderController {
         return jsonObject.toString();
     }
 
+    /*
+     * 更新
+     * */
     @PostMapping(value = "api/updateOrder")
     public String updateOrder(@RequestBody Orders requestOrder){
         JSONObject jsonObject = new JSONObject();
@@ -167,11 +183,14 @@ public class OrderController {
 
     }
 
+    /*
+     * 完成订单
+     * */
     @PostMapping(value = "api/finishOrder")
-    public String finishOrder(@RequestParam(value = "orderno") int orderNo,@RequestBody Orders requestOrder) throws ParseException {
+    public String finishOrder(@RequestBody Orders requestOrder) {
         JSONObject jsonObject = new JSONObject();
-        Orders o = orderService.selectByPrimaryKey(orderNo);
-       // Orders o = orderService.selectByPrimaryKey(orderNo);
+        Orders o = orderService.selectByPrimaryKey(requestOrder.getOrderno());
+
         if(o!=null) {
             if(o.getStatus()==1){
                 jsonObject.put("code",50000);
@@ -179,16 +198,14 @@ public class OrderController {
                 return jsonObject.toString();
             }
             String number = requestOrder.getNumber();
-            Date orderLefttime = new Date();
+            Date orderLefttime = requestOrder.getLefttime();
             System.out.println("update" + number + orderLefttime);
             requestOrder.setStatus(1);
-            int price = calculatePrice.getPrice(o.getDeploytime(),orderLefttime);
+            int price = calculatePrice.getPrice(o.getDeploytime(),o.getLefttime());
             Orderprice op = new Orderprice();
             op.setOrderno(o.getOrderno());
-            op.setPrice(price);
+            op.setPrice(22);
             requestOrder.setOrderprice(op);
-            requestOrder.setOrderno(orderNo);
-            requestOrder.setLefttime(orderLefttime);
             orderService.finishOrder(requestOrder);
             jsonObject.put("code",20000);
             jsonObject.put("message","订单完成");
@@ -199,4 +216,7 @@ public class OrderController {
         return jsonObject.toString();
 
     }
+
+
+
 }
