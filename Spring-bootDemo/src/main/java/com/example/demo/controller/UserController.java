@@ -2,9 +2,11 @@ package com.example.demo.controller;
 
 import cn.hutool.core.util.IdUtil;
 import com.example.demo.model.AuthUser;
+import com.example.demo.model.ImgResult;
 import com.example.demo.model.Users;
 import com.example.demo.result.Result;
 import com.example.demo.utils.EncryptUtils;
+import com.example.demo.utils.Exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wf.captcha.ArithmeticCaptcha;
 import io.swagger.annotations.Api;
@@ -12,11 +14,13 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 import com.example.demo.service.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
