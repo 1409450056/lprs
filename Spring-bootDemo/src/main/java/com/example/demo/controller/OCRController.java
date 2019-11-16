@@ -5,7 +5,6 @@ import com.baidu.aip.ocr.AipOcr;
 import com.baidu.aip.util.Base64Util;
 import com.example.demo.utils.AuthService;
 import com.example.demo.utils.HttpUtil;
-import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;

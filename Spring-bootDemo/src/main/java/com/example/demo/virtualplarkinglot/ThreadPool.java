@@ -1,29 +1,15 @@
 package com.example.demo.virtualplarkinglot;
 
-import com.example.demo.controller.OCRController;
-import com.example.demo.controller.ParklotController;
-import com.example.demo.model.Parklot;
-import com.example.demo.service.ParklotService;
-import com.example.demo.service.impl.ParklotServicelmpl;
-import com.sun.org.apache.xpath.internal.objects.XNumber;
-import com.sun.xml.internal.ws.api.pipe.ContentType;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.List;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.sun.xml.internal.ws.api.pipe.ContentType.*;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
 @Component
@@ -46,52 +32,6 @@ public class ThreadPool implements CommandLineRunner {
 		BlockingQueue<Runnable> bq = new ArrayBlockingQueue<Runnable>(10);
 		// ThreadPoolExecutor:创建自定义线程池，池中保存的线程数为3，允许最大的线程数为6
 		ThreadPoolExecutor tpe = new ThreadPoolExecutor(3, 50, 50, TimeUnit.MILLISECONDS, bq);
-
-
-
-	//    PlarkingLot.Initax1(ParklotServicelmpl.selectAllNo());
-	/*file格式转MultipartFile格式
-	* */
-
-
-	//	String path="C:\\Users\\A酱\\Desktop\\11111\\11.jpg";
-	//	File file=new File(path);
-
-
-		String adress=fengzhuang.fengzhuangaddress(times);
-		/*
-		*需要给定第二个参数，作为本地地址存放下载文件存放的文件夹
-		* */
-
-		File file1=DownloadUrl.saveUrlAs(adress,"C://Users/A//11111","GET",times);;
-		try {
-			// sleep一秒保证3个任务在分别在3个线程上执行
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-
-		FileInputStream fileInputStream=new FileInputStream(file1);
-		MultipartFile multipartFile=new MockMultipartFile("copy"+file1.getName(),file1.getName(), APPLICATION_OCTET_STREAM.toString(),fileInputStream);
-		JSONObject jsonObject = new JSONObject();
-		String number1 =OCRController.getPlate(multipartFile);
-		System.out.println(number1);
-
-
-		//List<Parklot> aa= ParklotController.getNullpark();
-
-
-
-
-
-	//	jsonObject=OCRController.getCarInfo(multipartFile);
-	//	jsonObject = jsonObject.getJSONObject("words_result");
-	//	String number = jsonObject.getString("number");
-	//	System.out.println(number);
-
-	//	JSONObject jo =JSONObject.
-
 
 		// 创建3个任务
 		Runnable t1 = new TempThread();
@@ -142,12 +82,12 @@ public class ThreadPool implements CommandLineRunner {
 	}
 
 
-	
 
 
 
-	
-	
+
+
+
 	class TempThread implements Runnable {
 
 
@@ -155,7 +95,7 @@ public class ThreadPool implements CommandLineRunner {
 		boolean []a= PlarkingLot.getA();
 //		ArrayList<String> list=PlarkingLot.getList();
 		String[] num=PlarkingLot.getB();
-		
+
 		    @Override
 		    public void run() {
 
@@ -173,22 +113,22 @@ public class ThreadPool implements CommandLineRunner {
 
 
 
-		    	
-		    	
+
+
 		    	for(i=0;i<50;i++) {
 		    		if(a[b[i]]==false) {
 		    			a[b[i]]=true;
 		    			num[b[i]]=carnumber;
 			    		i=b[i]+1;
-			    		
+
 		    		//list.add(carnumber);
 		    		flag=true;
 		    		break;
 		    		}
-		    		
+
 		    	}
-		    	
-		    	
+
+
 
 		    	if(flag==true) {
 		    		System.out.println("停车成功，" +"停入车位为"+i+"号车位 "  + "停入车辆车牌号："+carnumber);
@@ -207,11 +147,11 @@ public class ThreadPool implements CommandLineRunner {
 		        } catch (InterruptedException e) {
 		           e.printStackTrace();
 		        }
-		    		
+
 		    	}
-		    	
-		    	
-		    	
+
+
+
 	        // 打印正在执行的缓存线程信息
 		     //    System.out.println(Thread.currentThread().getName() + "正在被执行");
 		        try {
@@ -221,34 +161,34 @@ public class ThreadPool implements CommandLineRunner {
 	           e.printStackTrace();
 	        }
 	   }
-	
+
 	}
-	
-	
+
+
 	class TempThread2 implements Runnable{
 
-		
+
 		boolean []a= PlarkingLot.getA();
-		
-		
-		
+
+
+
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 		//	ArrayList<String> list=PlarkingLot.getList();
 			String[] num=PlarkingLot.getB();
-			
+
 			String carnumber=null;
 	    	//carnumber=RandomCarNumber.generateCarID();
 	    	boolean flag=false;
 	    	int i=0;
-	    	
-	    	
-	    	
+
+
+
 	    	int []b=AR.suiji();
-	    	
-	    	
-	    	
+
+
+
 	    	while(i<50) {
 	    		if(a[b[i]]==true) {
 	    			a[b[i]]=false;
@@ -260,7 +200,7 @@ public class ThreadPool implements CommandLineRunner {
 	    		}
 	    		i++;
 	    	}
-	    	
+
 
 	    	if(flag==true) {
 	    		System.out.println("车辆离开成功，车辆离开车位为："+i+"号车位  "+"离开车辆车牌号："+carnumber);
@@ -276,13 +216,13 @@ public class ThreadPool implements CommandLineRunner {
 			        } catch (InterruptedException e) {
 			           e.printStackTrace();
 			        }
-	    	
+
 	    	}
-			
-			
-			
-		
-		
+
+
+
+
+
 		try {
             // sleep一秒保证3个任务在分别在3个线程上执行
            Thread.sleep(500000);
@@ -290,7 +230,7 @@ public class ThreadPool implements CommandLineRunner {
            e.printStackTrace();
         }
 	}
-	
+
 	}
 
 
