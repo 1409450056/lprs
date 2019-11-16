@@ -70,7 +70,7 @@ public class OrderController {
     }
 
 
-    @GetMapping(value = "api/selectByNumber")
+    @GetMapping(value = "api/selectOrderByNumber")
     public String selectByNumber(@RequestParam(value = "number") String number) throws UnsupportedEncodingException {
         JSONObject jsonObject = new JSONObject();
         number = java.net.URLDecoder.decode(number,"UTF-8");
