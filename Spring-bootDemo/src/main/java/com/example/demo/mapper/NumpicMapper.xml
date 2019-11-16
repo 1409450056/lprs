@@ -135,12 +135,22 @@
     where url = #{url,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectMarkBynumber" resultType="java.lang.Integer">
+    select mark
+    from numpic
+    where number = #{number,jdbcType=VARCHAR}
+  </select>
+
   <select id="SelectNumberByUrl" resultType="java.lang.String">
     select number
     from numpic
     where url=#{url,javaType=string}
   </select>
-
+  <select id="selectUrlBynumber" resultType="java.lang.String">
+    select url
+    from numpic
+    where number = #{number,jdbcType=VARCHAR}
+  </select>
 
 
 </mapper>

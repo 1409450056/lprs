@@ -56,7 +56,7 @@ public class UploadController {
                 String fileUrl = "http://localhost:8080";
                 //文件获取路径
                 fileUrl = fileUrl + request.getContextPath() + "/image/" + fileName;
-                numpic.bindPic(plate,fileUrl);
+                //numpic.bindPic(plate,fileUrl);
             }
             String fileUrl = numpic.getUrl(plate);
             return new UploadResult(true,"null",plate,fileUrl,color,name);

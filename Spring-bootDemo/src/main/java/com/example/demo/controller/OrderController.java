@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Orderprice;
 import com.example.demo.model.Orders;
+import com.example.demo.service.NumpicService;
 import com.example.demo.service.OrdersService;
+import com.example.demo.socket.SendSocket;
 import com.example.demo.utils.calculatePrice;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -22,26 +24,37 @@ import java.util.*;
 public class OrderController {
     @Autowired
     private OrdersService orderService;
+    @Autowired
+    private NumpicService numpicService;
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    @ApiOperation(value="增加订单")
+
+    @ApiOperation(value = "增加订单")
     @PostMapping(value = "api/addOrder")
     public String addOrder(@RequestBody Orders requestOrder) throws ParseException {
+        SendSocket sendSocket = new SendSocket();
         JSONObject jsonObject = new JSONObject();
         String number = requestOrder.getNumber();
+        if (numpicService.selectMarkBynumber(number)==1){
+            jsonObject.put("code", 50000);
+            jsonObject.put("message", "插入失败，外卖车辆禁止");
+            sendSocket.test(number);
+            return jsonObject.toString();
+        }
         /*Date orderDeploytime = requestOrder.getDeploytime();
         Integer orderStatus = requestOrder.getStatus();*/
         Date orderDeploytime = new Date();
         Integer orderStatus = 0;
         List<Integer> statusList = orderService.getAllStatus(number);
-        for(int i : statusList){
-            if(i==0){
-                jsonObject.put("code",50000);
-                jsonObject.put("message","插入失败，车辆已入库");
+        for (int i : statusList) {
+            if (i == 0) {
+                jsonObject.put("code", 50000);
+                jsonObject.put("message", "插入失败，车辆已入库");
                 return jsonObject.toString();
             }
         }
-        System.out.println("insert: "+number+" "+orderDeploytime+ " " +  orderStatus);
-        Orders aa=new Orders(null,number,orderDeploytime,null,orderStatus);
+        System.out.println("insert: " + number + " " + orderDeploytime + " " + orderStatus);
+        Orders aa = new Orders(null, number, orderDeploytime, null, orderStatus);
         orderService.insert(aa);
 
         Orderprice op = new Orderprice();
@@ -49,143 +62,147 @@ public class OrderController {
         op.setOrderno(orderService.getOrderNo(requestOrder.getNumber()));
         orderService.insertPrice(op);
 
-        jsonObject.put("code",20000);
-        jsonObject.put("message","插入成功");
+        jsonObject.put("code", 20000);
+        jsonObject.put("message", "插入成功");
         return jsonObject.toString();
     }
-    @ApiOperation(value="删除订单")
+
+    @ApiOperation(value = "删除订单")
     @DeleteMapping(value = "api/deleteOrder")
     public String deleteOrder(@RequestParam(value = "orderno") int orderNo) {
         JSONObject jsonObject = new JSONObject();
         Orders o = orderService.selectByPrimaryKey(orderNo);
-        if(o!=null) {
+        if (o != null) {
             orderService.deleteByPrimaryKey(orderNo);
-            System.out.println("删除订单:"+orderNo);
-            jsonObject.put("code",20000);
-            jsonObject.put("message","删除成功");
+            System.out.println("删除订单:" + orderNo);
+            jsonObject.put("code", 20000);
+            jsonObject.put("message", "删除成功");
             return jsonObject.toString();
         }
-        jsonObject.put("code",50000);
-        jsonObject.put("message","删除失败，订单不存在");
+        jsonObject.put("code", 50000);
+        jsonObject.put("message", "删除失败，订单不存在");
         return jsonObject.toString();
 
     }
 
-    @ApiOperation(value="根据车牌搜索订单")
+    @ApiOperation(value = "根据车牌搜索订单")
     @GetMapping(value = "api/selectOrderByNumber")
     public String selectByNumber(@RequestParam(value = "number") String number) throws UnsupportedEncodingException {
         JSONObject jsonObject = new JSONObject();
-        number = java.net.URLDecoder.decode(number,"UTF-8");
+        number = java.net.URLDecoder.decode(number, "UTF-8");
         System.out.println(number);
         Orders o = orderService.selectByPrimaryKey1(number);
         System.out.println(o);
-        List<Map<String,String>> orderList = new ArrayList<>();
-        if(o!=null) {
-            jsonObject.put("code",20000);
+        List<Map<String, String>> orderList = new ArrayList<>();
+        if (o != null) {
+            jsonObject.put("code", 20000);
             Map<String, String> data = new HashMap<>();
-            data.put("orderNo",o.getOrderno().toString());
-            data.put("deployTime",o.getDeploytime().toString());
-            data.put("number",o.getNumber());
-            if(o.getLefttime()!=null) {
+            data.put("orderNo", o.getOrderno().toString());
+            data.put("deployTime", o.getDeploytime().toString());
+            data.put("number", o.getNumber());
+            if (o.getLefttime() != null) {
                 data.put("leftTime", o.getLefttime().toString());
-            }else{
-                data.put("leftTime","");
+            } else {
+                data.put("leftTime", "");
             }
-            if(o.getOrderprice().getPrice()!=null){
-                data.put("price",o.getOrderprice().getPrice().toString());
-            }else{
-                data.put("price","");
+            if (o.getOrderprice().getPrice() != null) {
+                data.put("price", o.getOrderprice().getPrice().toString());
+            } else {
+                data.put("price", "");
             }
-            data.put("status",o.getStatus().toString());
+            data.put("status", o.getStatus().toString());
             orderList.add(data);
-            jsonObject.put("data",orderList);
+            jsonObject.put("data", orderList);
             return jsonObject.toString();
         }
-        jsonObject.put("code",50000);
-        jsonObject.put("message","订单不存在");
+        jsonObject.put("code", 50000);
+        jsonObject.put("message", "订单不存在");
         return jsonObject.toString();
 
     }
-    @ApiOperation(value="获取全部订单")
+
+    @ApiOperation(value = "获取全部订单")
     @GetMapping(value = "api/getAllOrders")
-    public String getAllOrders(){
+    public String getAllOrders() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code",20000);
+        jsonObject.put("code", 20000);
         List<Orders> orders = orderService.selectAll();
-        List<Map<String,String>> orderList = new ArrayList<>();
-        for(Orders o : orders){
+        List<Map<String, String>> orderList = new ArrayList<>();
+        for (Orders o : orders) {
             Map<String, String> data = new HashMap<>();
-            data.put("orderNo",o.getOrderno().toString());
-            data.put("deployTime",sdf.format(o.getDeploytime()).toString());
-            data.put("number",o.getNumber());
-            if(o.getLefttime()!=null) {
+            data.put("orderNo", o.getOrderno().toString());
+            data.put("deployTime", sdf.format(o.getDeploytime()).toString());
+            data.put("number", o.getNumber());
+            if (o.getLefttime() != null) {
                 data.put("leftTime", sdf.format(o.getLefttime()).toString());
-            }else{
-                data.put("leftTime","");
+            } else {
+                data.put("leftTime", "");
             }
-            if(o.getOrderprice().getPrice()!=null){
-                data.put("price",o.getOrderprice().getPrice().toString());
-            }else{
-                data.put("price","");
+            if (o.getOrderprice().getPrice() != null) {
+                data.put("price", o.getOrderprice().getPrice().toString());
+            } else {
+                data.put("price", "");
             }
-            data.put("status",o.getStatus().toString());
+            data.put("status", o.getStatus().toString());
             orderList.add(data);
         }
-        jsonObject.put("data",orderList);
+        jsonObject.put("data", orderList);
         return jsonObject.toString();
     }
 
-    @ApiOperation(value="获取未完成订单")
+    @ApiOperation(value = "获取未完成订单")
     @GetMapping(value = "api/getFinishedOrders")
     public String getFinishedOrders() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code",20000);
+        jsonObject.put("code", 20000);
         List<Orders> orders = orderService.selectFinished();
-        List<Map<String,String>> orderList = new ArrayList<>();
-        for(Orders o : orders){
+        List<Map<String, String>> orderList = new ArrayList<>();
+        for (Orders o : orders) {
             Map<String, String> data = new HashMap<>();
-            data.put("orderNo",o.getOrderno().toString());
-            data.put("deployTime",sdf.format(o.getDeploytime()).toString());
-            data.put("number",o.getNumber());
+            data.put("orderNo", o.getOrderno().toString());
+            data.put("deployTime", sdf.format(o.getDeploytime()).toString());
+            data.put("number", o.getNumber());
             data.put("leftTime", sdf.format(o.getLefttime()).toString());
-            data.put("price",o.getOrderprice().getPrice().toString());
-            data.put("status",o.getStatus().toString());
+            data.put("price", o.getOrderprice().getPrice().toString());
+            data.put("status", o.getStatus().toString());
             orderList.add(data);
         }
-        jsonObject.put("data",orderList);
+        jsonObject.put("data", orderList);
         return jsonObject.toString();
     }
-    @ApiOperation(value="修改订单")
-    @ApiImplicitParam(name="requestOrder",value="订单信息",dataType = "Orders")
+
+    @ApiOperation(value = "修改订单")
+    @ApiImplicitParam(name = "requestOrder", value = "订单信息", dataType = "Orders")
     @PostMapping(value = "api/updateOrder")
-    public String updateOrder(@RequestBody Orders requestOrder){
+    public String updateOrder(@RequestBody Orders requestOrder) {
         JSONObject jsonObject = new JSONObject();
         String number = requestOrder.getNumber();
         Date orderLefttime = requestOrder.getLefttime();
-        jsonObject.put("code",20000);
-        jsonObject.put("message","订单已修改");
-        System.out.println("update"+number+orderLefttime);
+        jsonObject.put("code", 20000);
+        jsonObject.put("message", "订单已修改");
+        System.out.println("update" + number + orderLefttime);
         orderService.updateByPrimaryKey(requestOrder);
         return jsonObject.toString();
 
     }
-    @ApiOperation(value="完成订单")
+
+    @ApiOperation(value = "完成订单")
     @PostMapping(value = "api/finishOrder")
-    public String finishOrder(@RequestParam(value = "orderno") int orderNo,@RequestBody Orders requestOrder) throws ParseException {
+    public String finishOrder(@RequestParam(value = "orderno") int orderNo, @RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();
         Orders o = orderService.selectByPrimaryKey(orderNo);
-       // Orders o = orderService.selectByPrimaryKey(orderNo);
-        if(o!=null) {
-            if(o.getStatus()==1){
-                jsonObject.put("code",50000);
-                jsonObject.put("message","提交失败，订单已完成");
+        // Orders o = orderService.selectByPrimaryKey(orderNo);
+        if (o != null) {
+            if (o.getStatus() == 1) {
+                jsonObject.put("code", 50000);
+                jsonObject.put("message", "提交失败，订单已完成");
                 return jsonObject.toString();
             }
             String number = requestOrder.getNumber();
             Date orderLefttime = new Date();
             System.out.println("update" + number + orderLefttime);
             requestOrder.setStatus(1);
-            int price = calculatePrice.getPrice(o.getDeploytime(),orderLefttime);
+            int price = calculatePrice.getPrice(o.getDeploytime(), orderLefttime);
             Orderprice op = new Orderprice();
             op.setOrderno(o.getOrderno());
             op.setPrice(price);
@@ -193,12 +210,12 @@ public class OrderController {
             requestOrder.setOrderno(orderNo);
             requestOrder.setLefttime(orderLefttime);
             orderService.finishOrder(requestOrder);
-            jsonObject.put("code",20000);
-            jsonObject.put("message","订单完成");
+            jsonObject.put("code", 20000);
+            jsonObject.put("message", "订单完成");
             return jsonObject.toString();
         }
-        jsonObject.put("code",50000);
-        jsonObject.put("message","订单不存在");
+        jsonObject.put("code", 50000);
+        jsonObject.put("message", "订单不存在");
         return jsonObject.toString();
 
     }

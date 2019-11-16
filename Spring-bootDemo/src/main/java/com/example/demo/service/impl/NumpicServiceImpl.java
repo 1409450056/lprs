@@ -29,11 +29,13 @@ public class NumpicServiceImpl implements NumpicService {
         String result = null;
         List<Numpic> ns=numpicMapper.selectByPrimaryKey(number);
         for(Numpic n : ns){
-            result=result +n.getUrl();
+            result=n.getUrl();
         }
-
-
         return result;
+    }
+    @Override
+    public String getDestUrl(String number) {
+        return numpicMapper.selectUrlBynumber(number);
     }
 
     @Override
@@ -74,8 +76,6 @@ public class NumpicServiceImpl implements NumpicService {
     @Override
     public int selectMarkByPrimaryKey(String number) {
 
-
-
         return numpicMapper.selectMarkByPrimaryKey(number);
     }
 
@@ -100,5 +100,9 @@ public class NumpicServiceImpl implements NumpicService {
         return numpicMapper.SelectNumberByUrl(url);
     }
 
+    @Override
+    public int selectMarkBynumber(String number) {
+        return numpicMapper.selectMarkBynumber(number);
+    }
 
 }
