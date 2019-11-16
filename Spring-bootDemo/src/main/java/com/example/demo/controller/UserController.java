@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 import com.example.demo.service.*;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -40,6 +41,7 @@ public class UserController {
         this.redisService = redisService;
     }
 
+    @ApiOperation(value="用户登陆")
     @PostMapping(value = "api/login")
     public Result login(@Validated @RequestBody AuthUser authorizationUser) throws Exception {
         // 对 html 标签进行转义，防止 XSS 攻击
@@ -98,6 +100,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value="注册用户")
     @PostMapping(value = "api/register")
     public Result register(@RequestBody Users requestUser) throws Exception {
         String username = requestUser.getUsername();
@@ -120,6 +123,7 @@ public class UserController {
         return new Result(60240, null, "添加失败，用户已存在");
     }
 
+    @ApiOperation(value="删除用户")
     @DeleteMapping(value = "api/deleteRole")
     public String deleteUser(@RequestParam("id") int id) {
         JSONObject  jsonObject = new JSONObject();
@@ -136,6 +140,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value="获取用户信息")
     @ResponseBody
     @GetMapping(value = "api/getUsers")
     public String getUsers() throws Exception {
@@ -155,6 +160,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value="更新用户信息")
     @PutMapping(value = "api/updateUsers")
     public String updateUser(@RequestParam("id") int id, @RequestBody Users requestUser){
         JSONObject  jsonObject = new JSONObject();

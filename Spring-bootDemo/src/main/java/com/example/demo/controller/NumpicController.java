@@ -56,6 +56,7 @@ public class NumpicController {
     /*
     * 按标记降序查找
     * */
+    @ApiOperation(value="按标记降序查找")
     @GetMapping(value = "api/selectAllByMarkOrder")
     public String selectAllByMarkOrder() throws ParseException {
 
@@ -78,8 +79,9 @@ public class NumpicController {
     /*
     * 按车牌号修改标记值
     * */
-    @PostMapping(value = "api/updateAllByNumber")
-    public String updateAllByNumber(@RequestBody  Numpic requestNupic) throws ParseException {
+    @ApiOperation(value="按车牌号修改标记值")
+    @PostMapping(value = "api/updateAllByUrl")
+    public String updateAllByUrl(@RequestBody  Numpic requestNupic) throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
         numpic.updateMarkByNumber(requestNupic);
@@ -95,29 +97,29 @@ public class NumpicController {
     }
 
 
-
-    @GetMapping(value = "api/selectByPrimaryKey")
-    public String selectByPrimaryKey(@RequestParam String number) throws ParseException {
+    @ApiOperation(value="通过number查找")
+    @GetMapping(value = "api/selectByNumber")
+    public String selectByNumber(@RequestParam String number) throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",20000);
-        Numpic ns=numpic.selectByPrimaryKey(number);
+        List<Numpic> nss=numpic.selectByPrimaryKey(number);
         // Orders o = orderService.selectByPrimaryKey(orderNo);
         List<Map<String,String>> NumpicList = new ArrayList<>();
-
-        Map<String, String> data = new HashMap<>();
-        data.put("number",ns.getNumber()+"");
-        data.put("url",ns.getUrl().toString());
-        data.put("mark",ns.getMark().toString());
-        NumpicList.add(data);
-
+        for(Numpic ns : nss) {
+            Map<String, String> data = new HashMap<>();
+            data.put("number", ns.getNumber() + "");
+            data.put("url", ns.getUrl().toString());
+            data.put("mark", ns.getMark().toString());
+            NumpicList.add(data);
+        }
         jsonObject.put("data",NumpicList);
         return jsonObject.toString();
     }
 
-
-    @GetMapping(value = "api/selectUrlByPrimaryKey")
-    public String selectUrlByPrimaryKey(@RequestParam String number) throws ParseException {
+    @ApiOperation(value="按number查找url")
+    @GetMapping(value = "api/selectUrlByNumber")
+    public String selectUrlByNumber(@RequestParam String number) throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",20000);
@@ -135,12 +137,14 @@ public class NumpicController {
         return jsonObject.toString();
     }
 
-    @GetMapping(value = "api/selectMarkByPrimaryKey")
-    public String selectMarkByPrimaryKey(@RequestParam String number) throws ParseException {
+
+    @ApiOperation(value="按url查找mark")
+    @GetMapping(value = "api/selectMarkByUrl")
+    public String selectMarkByUrl(@RequestParam String url) throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",20000);
-        int ns=numpic.selectMarkByPrimaryKey(number);
+        int ns=numpic.selectMarkByPrimaryKey(url);
         // Orders o = orderService.selectByPrimaryKey(orderNo);
         List<Map<String,String>> NumpicList = new ArrayList<>();
 
@@ -154,7 +158,7 @@ public class NumpicController {
         return jsonObject.toString();
     }
 
-
+    @ApiOperation(value="增加车辆信息")
     @PostMapping(value = "api/addNumpic")
     public String addNumpic(@RequestBody Numpic requestNumpic) throws ParseException {
         JSONObject jsonObject = new JSONObject();
@@ -167,22 +171,46 @@ public class NumpicController {
         return jsonObject.toString();
     }
 
-
+    @ApiOperation(value="删除车辆信息")
     @DeleteMapping(value = "api/deleteNumpic")
     public String deleteNumpic(@RequestParam String number) {
         JSONObject jsonObject = new JSONObject();
-        Numpic o = numpic.selectByPrimaryKey(number);
-        if(o!=null) {
-            numpic.delectNumpic(number);
-            System.out.println("删除车辆车号:"+number);
-            jsonObject.put("code",20000);
-            jsonObject.put("message","删除成功");
-            return jsonObject.toString();
+        List<Numpic> ns = numpic.selectByPrimaryKey(number);
+
+        for(Numpic o : ns) {
+            if (o != null) {
+                numpic.delectNumpic(number);
+                System.out.println("删除车辆车号:" + number);
+                jsonObject.put("code", 20000);
+                jsonObject.put("message", "删除成功");
+
+            } else {
+                jsonObject.put("code", 50000);
+                jsonObject.put("message", "删除失败，车辆不存在");
+            }
         }
-        jsonObject.put("code",50000);
-        jsonObject.put("message","删除失败，车辆不存在");
         return jsonObject.toString();
 
+    }
+
+    @ApiOperation(value="按url查找number")
+    @GetMapping(value = "api/selectNumberByUrl")
+    public String selectNumberByUrl(@RequestParam String url) throws ParseException {
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",20000);
+        String ns=numpic.SelectNumberByUrl(url);
+        // Orders o = orderService.selectByPrimaryKey(orderNo);
+        List<Map<String,String>> NumpicList = new ArrayList<>();
+
+        Map<String, String> data = new HashMap<>();
+        //  data.put("number",ns.getNumber().toString());
+        //   data.put("url",ns.getUrl().toString());
+        data.put("Number",ns+"");
+        NumpicList.add(data);
+
+        jsonObject.put("data",NumpicList);
+        return jsonObject.toString();
     }
 
 

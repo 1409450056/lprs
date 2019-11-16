@@ -50,4 +50,9 @@ public class ParklotServicelmpl implements ParklotService {
     public List<Parklot> selectAllNo() {
         return parklotMapper.selectAllNo();
     }
+
+    @Override
+    public List<Parklot> selectAll() {
+        return parklotMapper.selectAll();
+    }
 }

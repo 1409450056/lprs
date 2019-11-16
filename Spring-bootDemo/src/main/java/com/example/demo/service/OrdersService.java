@@ -14,9 +14,7 @@ public interface OrdersService {
     void insertSelective(Orders record);
 
     Orders selectByPrimaryKey(int orderNo);
-
-    Orders selectByPrimaryKey1(String number);
-
+    
     void updateByPrimaryKeySelective(Orders record);
 
     void updateByPrimaryKey(Orders record);
@@ -32,4 +30,6 @@ public interface OrdersService {
     void insertPrice(Orderprice record);
 
     int getOrderNo(String number);
+
+    Orders selectByNumber(String number);
 }

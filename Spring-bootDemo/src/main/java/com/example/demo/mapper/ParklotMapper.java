@@ -2,10 +2,13 @@ package com.example.demo.mapper;
 
 import com.example.demo.model.Parklot;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Mapper
+@Component(value="ParklotDao")
+
 public interface ParklotMapper {
     int deleteByPrimaryKey(Integer no);
 
@@ -20,5 +23,7 @@ public interface ParklotMapper {
     int updateByPrimaryKey(Parklot record);
 
     List<Parklot> selectAllNo();
+
+    List<Parklot> selectAll();
 
 }
