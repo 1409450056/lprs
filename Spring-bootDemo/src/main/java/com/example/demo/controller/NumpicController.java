@@ -10,6 +10,7 @@ import com.example.demo.utils.calculatePrice;
 import com.opslab.Opslab;
 import com.opslab.util.DateUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class NumpicController {
     /*
     * 按标记查找
     * */
+    @ApiOperation(value="通过mark查找")
     @GetMapping(value = "api/selectByMark")
     public String selectByMark(@RequestParam int mark) throws ParseException {
 

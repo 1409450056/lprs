@@ -29,6 +29,15 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 @Component
 public class ThreadPool implements CommandLineRunner {
 
+	int times=1;
+
+
+	//@Autowired
+	//BackgroundService bgs;
+
+	//@Autowired
+
+
 
 
 	@Override
@@ -40,14 +49,31 @@ public class ThreadPool implements CommandLineRunner {
 
 
 
-
 	//    PlarkingLot.Initax1(ParklotServicelmpl.selectAllNo());
 	/*file格式转MultipartFile格式
 	* */
-		String path="C:\\Users\\A酱\\Desktop\\11111\\11.jpg";
-		File file=new File(path);
-		FileInputStream fileInputStream=new FileInputStream(file);
-		MultipartFile multipartFile=new MockMultipartFile("copy"+file.getName(),file.getName(), APPLICATION_OCTET_STREAM.toString(),fileInputStream);
+
+
+	//	String path="C:\\Users\\A酱\\Desktop\\11111\\11.jpg";
+	//	File file=new File(path);
+
+
+		String adress=fengzhuang.fengzhuangaddress(times);
+		/*
+		*需要给定第二个参数，作为本地地址存放下载文件存放的文件夹
+		* */
+
+		File file1=DownloadUrl.saveUrlAs(adress,"C://Users/A//11111","GET",times);;
+		try {
+			// sleep一秒保证3个任务在分别在3个线程上执行
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+
+		FileInputStream fileInputStream=new FileInputStream(file1);
+		MultipartFile multipartFile=new MockMultipartFile("copy"+file1.getName(),file1.getName(), APPLICATION_OCTET_STREAM.toString(),fileInputStream);
 		JSONObject jsonObject = new JSONObject();
 		String number1 =OCRController.getPlate(multipartFile);
 		System.out.println(number1);
@@ -82,7 +108,7 @@ public class ThreadPool implements CommandLineRunner {
 			tpe.execute(t1);
 			try {
 				// sleep一秒保证3个任务在分别在3个线程上执行
-				Thread.sleep(1000);
+				Thread.sleep(4000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -190,7 +216,7 @@ public class ThreadPool implements CommandLineRunner {
 		     //    System.out.println(Thread.currentThread().getName() + "正在被执行");
 		        try {
 	            // sleep一秒保证3个任务在分别在3个线程上执行
-	           Thread.sleep(1000);
+	           Thread.sleep(30000);
 	        } catch (InterruptedException e) {
 	           e.printStackTrace();
 	        }
@@ -259,12 +285,21 @@ public class ThreadPool implements CommandLineRunner {
 		
 		try {
             // sleep一秒保证3个任务在分别在3个线程上执行
-           Thread.sleep(10000);
+           Thread.sleep(500000);
         } catch (InterruptedException e) {
            e.printStackTrace();
         }
 	}
 	
 	}
-	
 
+
+
+   class TempThread3 implements Runnable{
+
+
+	@Override
+	public void run() {
+
+	}
+    }
