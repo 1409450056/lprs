@@ -26,6 +26,13 @@
     on o.orderNo = op.orderNo
     where o.orderNo = #{orderno,jdbcType=INTEGER}
   </select>
+  <select id="selectByPrimaryKey1" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from orders
+    where number = #{number,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from orders

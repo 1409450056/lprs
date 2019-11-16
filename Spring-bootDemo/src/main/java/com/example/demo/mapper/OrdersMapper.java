@@ -34,4 +34,6 @@ public interface OrdersMapper {
 
     Orders selectByNumber(String number);
 
+
+    Orders selectByPrimaryKey1(String number);
 }

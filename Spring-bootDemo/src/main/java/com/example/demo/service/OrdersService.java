@@ -15,6 +15,8 @@ public interface OrdersService {
 
     Orders selectByPrimaryKey(int orderNo);
 
+    Orders selectByPrimaryKey1(String number);
+
     void updateByPrimaryKeySelective(Orders record);
 
     void updateByPrimaryKey(Orders record);
