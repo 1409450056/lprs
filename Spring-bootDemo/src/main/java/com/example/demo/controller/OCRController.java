@@ -7,7 +7,6 @@ import com.example.demo.utils.AuthService;
 import com.example.demo.utils.HttpUtil;
 import com.google.gson.Gson;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +20,9 @@ import java.util.Objects;
 @RestController
 
 public class OCRController {
-    public static final String APP_ID = "17773772";
-    public static final String API_KEY = "0sY88YvnMqYrWG3jdkDKpGtA";
-    public static final String SECRET_KEY = "as0D09Ta1rQD0ZfRwNsO7vK4twdvOGGn";
+    public static final String APP_ID = "16965760";
+    public static final String API_KEY = "RqpVroiLSbzRjOuzstlPNAxx";
+    public static final String SECRET_KEY = "oUsGUGdkqmkW15GKmeKSwKXYNQhS6Xsa";
     String accessToken = null;
     public OCRController() {
         accessToken = AuthService.getAuth("lUdZzexrpdhCMxPR4I2WPEpW"
@@ -31,11 +30,6 @@ public class OCRController {
 
     }
 
-<<<<<<< HEAD
-
-    @ApiOperation(value="图片车牌号码识别")
-=======
->>>>>>> c4b027e1892ca64f087f6007a68489ff32e6df5d
     @ResponseBody
     @PostMapping("api/ocrimg")
     public String ocrimg(@RequestParam("file") MultipartFile file) throws IOException {

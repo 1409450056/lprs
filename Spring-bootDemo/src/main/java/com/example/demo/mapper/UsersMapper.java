@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Mapper
-@Component(value="UsersDao")
+@Component(value="UserDAO")
 
 public interface UsersMapper {
     int deleteByPrimaryKey(Integer id);

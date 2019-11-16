@@ -5,7 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
 @Mapper
-@Component(value="OrderpriceDao")
+@Component(value="OrderpriceDAO")
+
 public interface OrderpriceMapper {
     int deleteByPrimaryKey(Integer orderno);
 
