@@ -5,6 +5,7 @@ import com.baidu.aip.ocr.AipOcr;
 import com.baidu.aip.util.Base64Util;
 import com.example.demo.utils.AuthService;
 import com.example.demo.utils.HttpUtil;
+import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,6 @@ public class OCRController {
 
     }
 
-
-
     @ResponseBody
     @PostMapping("api/ocrimg")
     public String ocrimg(@RequestParam("file") MultipartFile file) throws IOException {
@@ -53,8 +52,7 @@ public class OCRController {
         return number;
     }
 
-
-    public static String getPlate(MultipartFile file) throws IOException {
+    public String getPlate(MultipartFile file) throws IOException {
         String number;
         try {
             HashMap<String, String> options = new HashMap<String, String>();
@@ -72,9 +70,7 @@ public class OCRController {
         }
         return number;
     }
-
-
-    public static JSONObject getCarInfo(MultipartFile file) throws IOException {
+    public JSONObject getCarInfo(MultipartFile file) throws IOException {
         JSONObject jsonObject = null;
         try {
             HashMap<String, String> options = new HashMap<String, String>();

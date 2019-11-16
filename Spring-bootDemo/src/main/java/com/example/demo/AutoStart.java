@@ -17,8 +17,8 @@ public class AutoStart implements CommandLineRunner {
     public void run(String... args) throws Exception {
         generateNumberThread gT = new generateNumberThread();
         CarLeftThread ct = new CarLeftThread();
-        //gT.start();
-        //ct.start();
+       // gT.start();
+       // ct.start();
     }
 
     class generateNumberThread extends Thread {

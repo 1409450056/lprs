@@ -4,14 +4,10 @@ import com.example.demo.model.Orderprice;
 import com.example.demo.model.Orders;
 import com.example.demo.service.OrdersService;
 import com.example.demo.utils.calculatePrice;
-import com.opslab.Opslab;
-import com.opslab.util.DateUtil;
 import io.swagger.annotations.Api;
-import io.swagger.models.auth.In;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.HtmlUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,16 +21,13 @@ public class OrderController {
     private OrdersService orderService;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-    /*
-    * 增加
-    * */
     @PostMapping(value = "api/addOrder")
     public String addOrder(@RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();
         String number = requestOrder.getNumber();
         /*Date orderDeploytime = requestOrder.getDeploytime();
         Integer orderStatus = requestOrder.getStatus();*/
-        Date orderDeploytime = DateUtil.date(DateUtil.currentDate());
+        Date orderDeploytime = new Date();
         Integer orderStatus = 0;
         List<Integer> statusList = orderService.getAllStatus(number);
         for(int i : statusList){
@@ -58,12 +51,8 @@ public class OrderController {
         return jsonObject.toString();
     }
 
-
-    /*
-     * 删除
-     * */
     @DeleteMapping(value = "api/deleteOrder")
-    public String deleteOrder(@RequestParam int orderNo) {
+    public String deleteOrder(@RequestParam(value = "orderno") int orderNo) {
         JSONObject jsonObject = new JSONObject();
         Orders o = orderService.selectByPrimaryKey(orderNo);
         if(o!=null) {
@@ -79,9 +68,7 @@ public class OrderController {
 
     }
 
-    /*
-     * 查
-     * */
+
     @GetMapping(value = "api/selectOrderBynumber")
     public String selectByOrderNo(@RequestParam int orderNo) {
         JSONObject jsonObject = new JSONObject();
@@ -112,9 +99,6 @@ public class OrderController {
 
     }
 
-    /*
-     * 查
-     * */
     @GetMapping(value = "api/getAllOrders")
     public String getAllOrders(){
         JSONObject jsonObject = new JSONObject();
@@ -144,9 +128,6 @@ public class OrderController {
     }
 
 
-    /*
-     * 封装查
-     * */
     @GetMapping(value = "api/getFinishedOrders")
     public String getFinishedOrders() {
         JSONObject jsonObject = new JSONObject();
@@ -167,9 +148,6 @@ public class OrderController {
         return jsonObject.toString();
     }
 
-    /*
-     * 更新
-     * */
     @PostMapping(value = "api/updateOrder")
     public String updateOrder(@RequestBody Orders requestOrder){
         JSONObject jsonObject = new JSONObject();
@@ -183,14 +161,11 @@ public class OrderController {
 
     }
 
-    /*
-     * 完成订单
-     * */
     @PostMapping(value = "api/finishOrder")
-    public String finishOrder(@RequestBody Orders requestOrder) {
+    public String finishOrder(@RequestParam(value = "orderno") int orderNo,@RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();
-        Orders o = orderService.selectByPrimaryKey(requestOrder.getOrderno());
-
+        Orders o = orderService.selectByPrimaryKey(orderNo);
+       // Orders o = orderService.selectByPrimaryKey(orderNo);
         if(o!=null) {
             if(o.getStatus()==1){
                 jsonObject.put("code",50000);
@@ -198,14 +173,16 @@ public class OrderController {
                 return jsonObject.toString();
             }
             String number = requestOrder.getNumber();
-            Date orderLefttime = requestOrder.getLefttime();
+            Date orderLefttime = new Date();
             System.out.println("update" + number + orderLefttime);
             requestOrder.setStatus(1);
-            int price = calculatePrice.getPrice(o.getDeploytime(),o.getLefttime());
+            int price = calculatePrice.getPrice(o.getDeploytime(),orderLefttime);
             Orderprice op = new Orderprice();
             op.setOrderno(o.getOrderno());
-            op.setPrice(22);
+            op.setPrice(price);
             requestOrder.setOrderprice(op);
+            requestOrder.setOrderno(orderNo);
+            requestOrder.setLefttime(orderLefttime);
             orderService.finishOrder(requestOrder);
             jsonObject.put("code",20000);
             jsonObject.put("message","订单完成");
@@ -216,7 +193,4 @@ public class OrderController {
         return jsonObject.toString();
 
     }
-
-
-
 }

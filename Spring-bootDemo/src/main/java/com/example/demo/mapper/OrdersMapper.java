@@ -1,13 +1,9 @@
 package com.example.demo.mapper;
 
 import com.example.demo.model.Orders;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;import java.util.List;
 
 @Mapper
-@Component(value = "OrdersDao")
 public interface OrdersMapper {
     int deleteByPrimaryKey(Integer orderno);
 
@@ -30,6 +26,4 @@ public interface OrdersMapper {
     List<Orders> selectFinished();
 
     int getOrderNo(String number);
-
-    Orders selectByPrimaryKey1(String number);
 }
