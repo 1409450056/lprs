@@ -6,7 +6,7 @@ public class fengzhuang {
         String wei=".jpg";
         String result=null;
         result=tou+no+wei;
-        System.out.println(result);
+     //   System.out.println(result);
         return result;
     }
 

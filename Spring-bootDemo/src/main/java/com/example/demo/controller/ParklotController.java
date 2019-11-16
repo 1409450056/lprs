@@ -3,6 +3,7 @@ import com.example.demo.mapper.ParklotMapper;
 import com.example.demo.model.Parklot;
 import com.example.demo.service.ParklotService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class ParklotController {
     ParklotService parklot;
 
 
-
+    @ApiOperation(value="获取所有空的车位信息")
     @GetMapping(value = "api/getNullpark")
     public String getNullpark() throws ParseException {
 
@@ -57,9 +58,9 @@ public class ParklotController {
     }
 
 
-
+    @ApiOperation(value="更新车位信息")
     @PostMapping(value = "api/updateParklot")
-    public String updateOrder(@RequestBody Parklot requestOrder){
+    public String updateParklot(@RequestBody Parklot requestOrder){
         JSONObject jsonObject = new JSONObject();
         String number = requestOrder.getNumber();
         jsonObject.put("message","车库信息已修改");
@@ -68,7 +69,25 @@ public class ParklotController {
 
     }
 
+    @ApiOperation(value="获取所有车位的信息")
+    @GetMapping(value = "api/getAllpark")
+    public String getAllpark() throws ParseException {
 
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",20000);
+        List<Parklot> Nullpark=parklot.selectAll();
+        List<Map<String,String>>ParklotList =new ArrayList<>();
+        for(Parklot Nullparks:Nullpark){
+            Map<String, String> data = new HashMap<>();
+            data.put("no",Nullparks.getNo().toString());
+
+            ParklotList.add(data);
+        }
+
+        jsonObject.put("data",ParklotList);
+        return jsonObject.toString();
+
+    }
 
 
 }

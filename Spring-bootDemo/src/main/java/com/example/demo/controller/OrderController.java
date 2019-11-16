@@ -7,6 +7,7 @@ import com.example.demo.utils.calculatePrice;
 import com.opslab.Opslab;
 import com.opslab.util.DateUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class OrderController {
     /*
     * 增加
     * */
+    @ApiOperation(value="增加订单")
     @PostMapping(value = "api/addOrder")
     public String addOrder(@RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();
@@ -62,6 +64,7 @@ public class OrderController {
     /*
      * 删除
      * */
+    @ApiOperation(value="删除订单")
     @DeleteMapping(value = "api/deleteOrder")
     public String deleteOrder(@RequestParam int orderNo) {
         JSONObject jsonObject = new JSONObject();
@@ -82,7 +85,8 @@ public class OrderController {
     /*
      * 查
      * */
-    @GetMapping(value = "api/selectOrderBynumber")
+    @ApiOperation(value="按orderNo查找订单")
+    @GetMapping(value = "api/selectOrderByOrderNo")
     public String selectByOrderNo(@RequestParam int orderNo) {
         JSONObject jsonObject = new JSONObject();
         Orders o = orderService.selectByPrimaryKey(orderNo);
@@ -115,6 +119,7 @@ public class OrderController {
     /*
      * 查
      * */
+    @ApiOperation(value="获取所有订单信息")
     @GetMapping(value = "api/getAllOrders")
     public String getAllOrders(){
         JSONObject jsonObject = new JSONObject();
@@ -147,6 +152,7 @@ public class OrderController {
     /*
      * 封装查
      * */
+    @ApiOperation(value="查找已完成订单")
     @GetMapping(value = "api/getFinishedOrders")
     public String getFinishedOrders() {
         JSONObject jsonObject = new JSONObject();
@@ -170,6 +176,7 @@ public class OrderController {
     /*
      * 更新
      * */
+    @ApiOperation(value="更新订单")
     @PostMapping(value = "api/updateOrder")
     public String updateOrder(@RequestBody Orders requestOrder){
         JSONObject jsonObject = new JSONObject();
@@ -186,11 +193,12 @@ public class OrderController {
     /*
      * 完成订单
      * */
+    @ApiOperation(value="完成订单")
     @PostMapping(value = "api/finishOrder")
-    public String finishOrder(@RequestBody Orders requestOrder) {
+    public String finishOrder(@RequestParam(value = "orderno") int orderNo,@RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();
-        Orders o = orderService.selectByPrimaryKey(requestOrder.getOrderno());
-
+        Orders o = orderService.selectByPrimaryKey(orderNo);
+        // Orders o = orderService.selectByPrimaryKey(orderNo);
         if(o!=null) {
             if(o.getStatus()==1){
                 jsonObject.put("code",50000);
@@ -198,14 +206,16 @@ public class OrderController {
                 return jsonObject.toString();
             }
             String number = requestOrder.getNumber();
-            Date orderLefttime = requestOrder.getLefttime();
+            Date orderLefttime = new Date();
             System.out.println("update" + number + orderLefttime);
             requestOrder.setStatus(1);
-            int price = calculatePrice.getPrice(o.getDeploytime(),o.getLefttime());
+            int price = calculatePrice.getPrice(o.getDeploytime(),orderLefttime);
             Orderprice op = new Orderprice();
             op.setOrderno(o.getOrderno());
-            op.setPrice(22);
+            op.setPrice(price);
             requestOrder.setOrderprice(op);
+            requestOrder.setOrderno(orderNo);
+            requestOrder.setLefttime(orderLefttime);
             orderService.finishOrder(requestOrder);
             jsonObject.put("code",20000);
             jsonObject.put("message","订单完成");
@@ -214,8 +224,40 @@ public class OrderController {
         jsonObject.put("code",50000);
         jsonObject.put("message","订单不存在");
         return jsonObject.toString();
+    }
+
+    @ApiOperation(value="按number查找订单")
+    @GetMapping(value = "api/selectOrderByNumber")
+    public String selectByNumber(@RequestParam String number) {
+        JSONObject jsonObject = new JSONObject();
+        Orders o = orderService.selectByNumber(number);
+        if(o!=null) {
+            jsonObject.put("code",20000);
+            Map<String, String> data = new HashMap<>();
+            data.put("orderNo",o.getOrderno().toString());
+            data.put("deployTime",o.getDeploytime().toString());
+            data.put("number",o.getNumber());
+            if(o.getLefttime()!=null) {
+                data.put("leftTime", o.getLefttime().toString());
+            }else{
+                data.put("leftTime","");
+            }
+            if(o.getOrderprice().getPrice()!=null){
+                data.put("price",o.getOrderprice().getPrice().toString());
+            }else{
+                data.put("price","");
+            }
+            data.put("status",o.getStatus().toString());
+            jsonObject.put("data",data);
+            return jsonObject.toString();
+        }
+        jsonObject.put("code",50000);
+        jsonObject.put("message","订单不存在");
+        return jsonObject.toString();
 
     }
+
+
 
 
 

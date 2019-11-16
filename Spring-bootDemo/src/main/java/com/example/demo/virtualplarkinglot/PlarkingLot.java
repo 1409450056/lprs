@@ -36,8 +36,15 @@ public class PlarkingLot {
 		i=0;
 		List<Parklot> Nullpark=parklot;
 		for(Parklot Nullparks:Nullpark){
-			i=Nullparks.getNo();
+			if(Nullparks.getNumber()!=null){
+				i=Nullparks.getNo()-1;
+				b[i]=Nullparks.getNumber();
+				a[i]=true;
+
+			}else{
+			i=Nullparks.getNo()-1;
 			a[i]=false;
+			}
 		}
 	}
 	

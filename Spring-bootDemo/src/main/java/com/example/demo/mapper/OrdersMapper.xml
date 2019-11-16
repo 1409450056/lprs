@@ -132,4 +132,11 @@
   <select id="getOrderNo" parameterType="java.lang.String" resultType="java.lang.Integer">
     select orderNo from orders where number = #{number,jdbcType=VARCHAR} and status = 0
   </select>
+
+  <select id="selectByNumber" resultMap="BaseResultMap">
+        select
+      <include refid="Base_Column_List" />
+      from orders where number= #{number,jdbcType=VARCHAR} and status=0
+
+  </select>
 </mapper>

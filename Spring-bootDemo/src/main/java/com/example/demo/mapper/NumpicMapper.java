@@ -14,7 +14,7 @@ public interface NumpicMapper {
 
     int insertSelective(Numpic record);
 
-    Numpic selectByPrimaryKey(String number);
+    List<Numpic> selectByPrimaryKey(String number);
 
     int updateByPrimaryKeySelective(Numpic record);
 
@@ -26,7 +26,9 @@ public interface NumpicMapper {
 
     int updateMarkByPrimaryKey(Numpic record);
     
-    String selectUrlByPrimaryKey(String number);
+    List<Numpic> selectUrlByPrimaryKey(String number);
 
     int selectMarkByPrimaryKey(String number);
+
+    String SelectNumberByUrl(String url);
 }

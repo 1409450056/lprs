@@ -78,4 +78,9 @@ public class OrdersServicelmpl implements OrdersService {
     public int getOrderNo(String number){
         return orderMapper.getOrderNo(number);
     }
+
+    @Override
+    public Orders selectByNumber(String number) {
+        return orderMapper.selectByNumber(number);
+    }
 }

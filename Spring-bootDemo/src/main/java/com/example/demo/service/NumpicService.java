@@ -23,9 +23,11 @@ public interface NumpicService {
 
     int selectMarkByPrimaryKey(String number);
 
-    Numpic selectByPrimaryKey(String number);
+    List<Numpic> selectByPrimaryKey(String number);
 
     void insertNumpic(Numpic record);
 
     void delectNumpic(String number);
+
+    String SelectNumberByUrl(String url);
 }

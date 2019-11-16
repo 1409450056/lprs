@@ -19,5 +19,5 @@ public interface ParklotService  {
 
     List<Parklot> selectAllNo();
 
-
+    List<Parklot> selectAll();
 }

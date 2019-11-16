@@ -26,7 +26,14 @@ public class NumpicServiceImpl implements NumpicService {
 
     @Override
     public String getUrl(String number) {
-        return numpicMapper.selectByPrimaryKey(number).getUrl();
+        String result = null;
+        List<Numpic> ns=numpicMapper.selectByPrimaryKey(number);
+        for(Numpic n : ns){
+            result=result +n.getUrl();
+        }
+
+
+        return result;
     }
 
     @Override
@@ -54,17 +61,27 @@ public class NumpicServiceImpl implements NumpicService {
 
     @Override
     public String selectUrlByPrimaryKey(String number) {
-        return numpicMapper.selectUrlByPrimaryKey(number);
+        String result = null;
+        List<Numpic> nss=numpicMapper.selectUrlByPrimaryKey(number);
+        for(Numpic n : nss){
+            result=result +n.getUrl().toString()+";";
+        }
+
+
+        return result;
     }
 
     @Override
     public int selectMarkByPrimaryKey(String number) {
+
+
+
         return numpicMapper.selectMarkByPrimaryKey(number);
     }
 
 
     @Override
-    public Numpic selectByPrimaryKey(String number) {
+    public List<Numpic> selectByPrimaryKey(String number) {
         return numpicMapper.selectByPrimaryKey(number);
     }
 
@@ -76,6 +93,11 @@ public class NumpicServiceImpl implements NumpicService {
     @Override
     public void delectNumpic(String number) {
         numpicMapper.deleteByPrimaryKey(number);
+    }
+
+    @Override
+    public String SelectNumberByUrl(String url) {
+        return numpicMapper.SelectNumberByUrl(url);
     }
 
 

@@ -21,4 +21,6 @@ public interface ParklotMapper {
 
     List<Parklot> selectAllNo();
 
+    List<Parklot> selectAll();
+
 }

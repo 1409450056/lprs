@@ -3,9 +3,9 @@
 <mapper namespace="com.example.demo.mapper.NumpicMapper">
   <resultMap id="BaseResultMap" type="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
-    <id column="number" jdbcType="VARCHAR" property="number" />
+    <id column="url" jdbcType="VARCHAR" property="url" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
 
-    <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="mark" javaType="INTEGER" property="mark"/>
 
   </resultMap>
@@ -14,6 +14,12 @@
 
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="mark" javaType="INTEGER" property="mark"/>
+
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.example.demo.model.Numpic">
+
+    <result column="url" jdbcType="VARCHAR" property="url" />
 
   </resultMap>
 
@@ -37,8 +43,8 @@
   </delete>
   <insert id="insert" parameterType="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
-    insert into numpic(`number`, url, `mark`)
-    values (#{number,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{mark,javaType=INTEGER})
+    insert into numpic(`url`, number, `mark`)
+    values ( #{url,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},#{mark,javaType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
@@ -86,7 +92,7 @@
 
   <sql id="Base_Column_List1">
     <!--@mbg.generated-->
-    `number`, url,mark
+    `url`,number, mark
   </sql>
 
 
@@ -112,13 +118,13 @@
   <update id="updateMarkByPrimaryKey" parameterType="com.example.demo.model.Numpic">
     <!--@mbg.generated-->
     update numpic
-    set `url` = #{url,jdbcType=VARCHAR},
+    set `number` = #{number,jdbcType=VARCHAR},
       `mark` = #{mark,javaType=INTEGER}
-    where `number` = #{number,jdbcType=VARCHAR}
+    where `url` = #{url,jdbcType=VARCHAR}
   </update>
 
-  <select id="selectUrlByPrimaryKey" resultType="java.lang.String">
-    select url
+  <select id="selectUrlByPrimaryKey" resultMap="BaseResultMap">
+    select *
     from numpic
     where number = #{number,jdbcType=VARCHAR}
   </select>
@@ -126,10 +132,14 @@
   <select id="selectMarkByPrimaryKey" resultType="java.lang.Integer">
     select mark
     from numpic
-    where number = #{number,jdbcType=VARCHAR}
+    where url = #{url,jdbcType=VARCHAR}
   </select>
 
-
+  <select id="SelectNumberByUrl" resultType="java.lang.String">
+    select number
+    from numpic
+    where url=#{url,javaType=string}
+  </select>
 
 
 

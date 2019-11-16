@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class UserController {
     @Autowired
     private ObjectMapper jacksonObjectMapper;
 
+    @ApiOperation(value="用户登陆")
     @PostMapping(value = "api/login")
     public Result login(@RequestBody Users requestUser) {
         // 对 html 标签进行转义，防止 XSS 攻击
@@ -52,6 +54,7 @@ public class UserController {
         return new Result(60204, data, "账号密码错误");
     }
 
+    @ApiOperation(value="注册用户")
     @PostMapping(value = "api/register")
     public Result register(@RequestBody Users requestUser) {
         String username = requestUser.getUsername();
@@ -74,6 +77,7 @@ public class UserController {
         return new Result(60240, null, "添加失败，用户已存在");
     }
 
+    @ApiOperation(value="删除用户")
     @DeleteMapping(value = "api/deleteRole")
     public String deleteUser(@RequestParam("id") int id) {
         JSONObject  jsonObject = new JSONObject();
@@ -90,6 +94,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value="获取用户信息")
     @ResponseBody
     @GetMapping(value = "api/getUsers")
     public String getUsers() {
@@ -109,6 +114,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value="更新用户信息")
     @PutMapping(value = "api/updateUsers")
     public String updateUser(@RequestParam("id") int id, @RequestBody Users requestUser){
         JSONObject  jsonObject = new JSONObject();
