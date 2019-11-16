@@ -32,4 +32,7 @@ public interface OrdersService {
     void insertPrice(Orderprice record);
 
     int getOrderNo(String number);
+
+    Orders selectByNumber(String number);
+
 }

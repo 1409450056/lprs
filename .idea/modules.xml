@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Spring-bootDemo/.mvn/.mvn.iml" filepath="$PROJECT_DIR$/Spring-bootDemo/.mvn/.mvn.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Spring-bootDemo/src/main/main.iml" filepath="$PROJECT_DIR$/Spring-bootDemo/src/main/main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Spring-bootDemo/src/test/test.iml" filepath="$PROJECT_DIR$/Spring-bootDemo/src/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Spring-bootDemo/demo.iml" filepath="$PROJECT_DIR$/Spring-bootDemo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/lprs-master.iml" filepath="$PROJECT_DIR$/.idea/lprs-master.iml" />
     </modules>
   </component>
 </project>

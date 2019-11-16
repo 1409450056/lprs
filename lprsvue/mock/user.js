@@ -12,13 +12,13 @@ const users = {
   'admin-token': {
     roles: ['admin'],
     introduction: 'I am a super administrator',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    avatar: 'http://192.144.152.148:997/avatar1.jpg',
     name: 'Admin'
   },
   'user-token': {
     roles: ['user'],
     introduction: 'I am an user',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    avatar: 'http://192.144.152.148:997/avatar2.jpg',
     name: 'User'
   }
 }
@@ -80,5 +80,6 @@ export default [
         data: 'success'
       }
     }
-  }
+  },
+  
 ]
