@@ -31,8 +31,11 @@ public class OCRController {
 
     }
 
+<<<<<<< HEAD
 
     @ApiOperation(value="图片车牌号码识别")
+=======
+>>>>>>> c4b027e1892ca64f087f6007a68489ff32e6df5d
     @ResponseBody
     @PostMapping("api/ocrimg")
     public String ocrimg(@RequestParam("file") MultipartFile file) throws IOException {
@@ -55,8 +58,7 @@ public class OCRController {
         return number;
     }
 
-
-    public static String getPlate(MultipartFile file) throws IOException {
+    public String getPlate(MultipartFile file) throws IOException {
         String number;
         try {
             HashMap<String, String> options = new HashMap<String, String>();
@@ -74,9 +76,7 @@ public class OCRController {
         }
         return number;
     }
-
-
-    public static JSONObject getCarInfo(MultipartFile file) throws IOException {
+    public JSONObject getCarInfo(MultipartFile file) throws IOException {
         JSONObject jsonObject = null;
         try {
             HashMap<String, String> options = new HashMap<String, String>();

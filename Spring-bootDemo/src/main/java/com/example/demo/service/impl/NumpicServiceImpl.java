@@ -6,8 +6,6 @@ import com.example.demo.service.NumpicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class NumpicServiceImpl implements NumpicService {
     @Autowired
@@ -15,7 +13,7 @@ public class NumpicServiceImpl implements NumpicService {
 
     @Override
     public void bindPic(String number, String URL) {
-            numpicMapper.insert(new Numpic(number, URL,0));
+            numpicMapper.insert(new Numpic(number, URL));
             System.out.println("插入数据" + number);
     }
 
@@ -43,6 +41,7 @@ public class NumpicServiceImpl implements NumpicService {
         }
         return false;
     }
+<<<<<<< HEAD
 
     @Override
     public List<Numpic> selectByMark(int mark) {
@@ -101,4 +100,6 @@ public class NumpicServiceImpl implements NumpicService {
     }
 
 
+=======
+>>>>>>> c4b027e1892ca64f087f6007a68489ff32e6df5d
 }

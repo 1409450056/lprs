@@ -14,7 +14,11 @@ public interface OrdersService {
     void insertSelective(Orders record);
 
     Orders selectByPrimaryKey(int orderNo);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> c4b027e1892ca64f087f6007a68489ff32e6df5d
     void updateByPrimaryKeySelective(Orders record);
 
     void updateByPrimaryKey(Orders record);

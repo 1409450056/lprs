@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import cn.hutool.core.util.IdUtil;
+import com.example.demo.annotation.AnonymousAccess;
 import com.example.demo.model.AuthUser;
 import com.example.demo.model.ImgResult;
 import com.example.demo.model.Users;
@@ -43,6 +44,7 @@ public class UserController {
 
     @ApiOperation(value="用户登陆")
     @PostMapping(value = "api/login")
+    @AnonymousAccess
     public Result login(@Validated @RequestBody AuthUser authorizationUser) throws Exception {
         // 对 html 标签进行转义，防止 XSS 攻击
         String code = redisService.getCodeVal(authorizationUser.getUuid());
@@ -78,6 +80,7 @@ public class UserController {
     }
 
     @ApiOperation("获取验证码")
+    @AnonymousAccess
     @GetMapping(value = "api/code")
     public String getCode(){
         // 算术类型 https://gitee.com/whvse/EasyCaptcha
@@ -177,14 +180,6 @@ public class UserController {
         jsonObject.put("message","用户不存在");
         return jsonObject.toString();
     }
-
-
-
-
-
-
-
-
 
 }
 

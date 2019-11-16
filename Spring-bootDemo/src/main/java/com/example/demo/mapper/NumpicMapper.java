@@ -2,9 +2,6 @@ package com.example.demo.mapper;
 
 import com.example.demo.model.Numpic;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 @Mapper
 public interface NumpicMapper {
@@ -19,6 +16,7 @@ public interface NumpicMapper {
     int updateByPrimaryKeySelective(Numpic record);
 
     int updateByPrimaryKey(Numpic record);
+<<<<<<< HEAD
 
     List<Numpic> selectByMark(int mark);
 
@@ -31,4 +29,6 @@ public interface NumpicMapper {
     int selectMarkByPrimaryKey(String number);
 
     String SelectNumberByUrl(String url);
+=======
+>>>>>>> c4b027e1892ca64f087f6007a68489ff32e6df5d
 }

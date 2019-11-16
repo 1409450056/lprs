@@ -7,6 +7,7 @@ public class Orderprice implements Serializable {
 
     private Integer price;
 
+
     private static final long serialVersionUID = 1L;
 
     public Integer getOrderno() {

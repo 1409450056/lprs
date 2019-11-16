@@ -2,8 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.model.Numpic;
 
-import java.util.List;
-
 public interface NumpicService {
     void bindPic(String number,String url);
 
@@ -12,6 +10,7 @@ public interface NumpicService {
     String getUrl(String number);
 
     boolean findDuplicate(String number);
+<<<<<<< HEAD
 
     List<Numpic> selectByMark(int mark);
 
@@ -30,4 +29,6 @@ public interface NumpicService {
     void delectNumpic(String number);
 
     String SelectNumberByUrl(String url);
+=======
+>>>>>>> c4b027e1892ca64f087f6007a68489ff32e6df5d
 }

@@ -31,6 +31,9 @@ public interface OrdersMapper {
     List<Orders> selectFinished();
 
     int getOrderNo(String number);
+<<<<<<< HEAD
 
     Orders selectByNumber(String number);
+=======
+>>>>>>> c4b027e1892ca64f087f6007a68489ff32e6df5d
 }
