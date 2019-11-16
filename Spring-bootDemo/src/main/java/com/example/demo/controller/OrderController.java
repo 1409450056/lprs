@@ -5,6 +5,8 @@ import com.example.demo.model.Orders;
 import com.example.demo.service.OrdersService;
 import com.example.demo.utils.calculatePrice;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,7 @@ public class OrderController {
     @Autowired
     private OrdersService orderService;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
+    @ApiOperation(value="增加订单")
     @PostMapping(value = "api/addOrder")
     public String addOrder(@RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();
@@ -51,7 +53,7 @@ public class OrderController {
         jsonObject.put("message","插入成功");
         return jsonObject.toString();
     }
-
+    @ApiOperation(value="删除订单")
     @DeleteMapping(value = "api/deleteOrder")
     public String deleteOrder(@RequestParam(value = "orderno") int orderNo) {
         JSONObject jsonObject = new JSONObject();
@@ -69,7 +71,7 @@ public class OrderController {
 
     }
 
-
+    @ApiOperation(value="根据车牌搜索订单")
     @GetMapping(value = "api/selectOrderByNumber")
     public String selectByNumber(@RequestParam(value = "number") String number) throws UnsupportedEncodingException {
         JSONObject jsonObject = new JSONObject();
@@ -104,7 +106,7 @@ public class OrderController {
         return jsonObject.toString();
 
     }
-
+    @ApiOperation(value="获取全部订单")
     @GetMapping(value = "api/getAllOrders")
     public String getAllOrders(){
         JSONObject jsonObject = new JSONObject();
@@ -133,7 +135,7 @@ public class OrderController {
         return jsonObject.toString();
     }
 
-
+    @ApiOperation(value="获取未完成订单")
     @GetMapping(value = "api/getFinishedOrders")
     public String getFinishedOrders() {
         JSONObject jsonObject = new JSONObject();
@@ -153,7 +155,8 @@ public class OrderController {
         jsonObject.put("data",orderList);
         return jsonObject.toString();
     }
-
+    @ApiOperation(value="修改订单")
+    @ApiImplicitParam(name="requestOrder",value="订单信息",dataType = "Orders")
     @PostMapping(value = "api/updateOrder")
     public String updateOrder(@RequestBody Orders requestOrder){
         JSONObject jsonObject = new JSONObject();
@@ -166,7 +169,7 @@ public class OrderController {
         return jsonObject.toString();
 
     }
-
+    @ApiOperation(value="完成订单")
     @PostMapping(value = "api/finishOrder")
     public String finishOrder(@RequestParam(value = "orderno") int orderNo,@RequestBody Orders requestOrder) throws ParseException {
         JSONObject jsonObject = new JSONObject();

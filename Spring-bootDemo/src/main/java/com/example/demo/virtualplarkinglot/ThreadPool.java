@@ -377,7 +377,7 @@ public class ThreadPool implements CommandLineRunner {
 
 		boolean []a= getA();
 
-
+		String[] num= getB();
 
 
 
@@ -387,7 +387,7 @@ public class ThreadPool implements CommandLineRunner {
 		public void run() {
 			// TODO Auto-generated method stub
 		//	ArrayList<String> list=PlarkingLot.getList();
-			String[] num= getB();
+		//	String[] num= getB();
 
 			String carnumber=null;
 	    	//carnumber=RandomCarNumber.generateCarID();
@@ -451,6 +451,8 @@ public class ThreadPool implements CommandLineRunner {
 	    			a[b[i]]=false;
 	        	//	carnumber=list.get(0);
 	    			carnumber=num[b[i]];
+					num[b[i]]=null;
+
 	        		i=b[i]+1;
 	        		flag=true;
 	        		break;

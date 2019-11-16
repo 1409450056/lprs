@@ -7,6 +7,8 @@ import com.example.demo.utils.AuthService;
 import com.example.demo.utils.HttpUtil;
 import com.google.gson.Gson;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +33,8 @@ public class OCRController {
     }
 
     @ResponseBody
+    @ApiOperation(value="图片识别")
+    @ApiImplicitParam(name="file",value="图片文件",dataType = "MultipartFile")
     @PostMapping("api/ocrimg")
     public String ocrimg(@RequestParam("file") MultipartFile file) throws IOException {
         if (Objects.isNull(file) || file.isEmpty()) {
