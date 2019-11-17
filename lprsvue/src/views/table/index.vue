@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-button type="primary" @click="handleAddOrder">添加订单</el-button>
-    <div style = "margin-left:50px;display:inline">
+    <div style="margin-left:50px;display:inline">
       <el-input v-model="order.number" maxlength="7" placeholder="输入车牌号搜索" style="width: 200px;"/>
       <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="selectByNumber">搜索</el-button>
     </div>
@@ -12,7 +12,7 @@
       border
       fit
       highlight-current-row
-      style = "margin-top:30px;"
+      style="margin-top:30px;"
     >
       <el-table-column align="center" label="订单编号" width="95">
         <template slot-scope="scope">
@@ -65,7 +65,7 @@
     <el-dialog :visible.sync="dialogVisible1" title="请支付费用以完成订单">
       <el-form :model="order" label-width="80px" label-position="left">
         <template>
-          <div><img src="@/assets/pay_images/zfbpay.png" height="315" width="315"/></div>
+          <div><img src="@/assets/pay_images/zfbpay.png" height="315" width="315"></div>
         </template>
       </el-form>
       <div style="text-align:right;">
@@ -124,12 +124,6 @@ export default {
     },
 
     selectByNumber() {
-      // selectByOrderNo(this.order.orderNo).then(response => {
-      //   this.list = response.data
-      //   this.listLoading = false
-      //   alert(list)
-        
-      // })
       this.listLoading = true
       selectByNumber(encodeURI(encodeURI(this.order.number))).then(response => {
         const listArray = []
@@ -140,9 +134,6 @@ export default {
         this.listLoading = false
       })
       this.listLoading = false
-      //alert(this.list)
-        
-        
     },
 
     handleAddOrder() {

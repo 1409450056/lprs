@@ -115,12 +115,11 @@
     order by mark
   </select>
 
-  <update id="updateMarkByPrimaryKey" parameterType="com.example.demo.model.Numpic">
+  <update id="updateMarkByPrimaryKey" parameterType="java.lang.String">
     <!--@mbg.generated-->
     update numpic
-    set `number` = #{number,jdbcType=VARCHAR},
-      `mark` = #{mark,javaType=INTEGER}
-    where `url` = #{url,jdbcType=VARCHAR}
+    set `mark` = 1
+    where `number` = #{url,jdbcType=VARCHAR}
   </update>
 
   <select id="selectUrlByPrimaryKey" resultMap="BaseResultMap">

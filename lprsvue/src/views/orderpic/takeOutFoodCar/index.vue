@@ -22,12 +22,14 @@
                     :total="total"
                     @current-change="handlePageChange"
                 ></el-pagination>
- </div>
+    </div>
   </div>
 </template>
+
+
 <script>
 import Pagination from '@/components/Pagination'
-import { selectAllByMarkOrder } from '@/api/orderpic'
+import { selectAllByMarkOrder,selectByMark } from '@/api/orderpic'
 
 
 export default {
@@ -37,6 +39,8 @@ export default {
       list:null,
       total:0,
       listLoading:true,
+      dialogVisible2: false,
+      dialogVisible1: false,
       resultData:[],
       query:{
         pageIndex:1,
@@ -66,13 +70,15 @@ export default {
   methods: {
 
     handclick(index) {
+      this.dialogVisible2 = true
       alert(this.tableData[index].number)
+      this.selectByNumber(index)
     },
     getList() {
       this.listLoading = true
       // this.resultData = this.pictures
       // this.total = this.pictures.length
-      selectAllByMarkOrder().then(response => {
+      selectByMark().then(response => {
         this.resultData = response.data
         this.total = this.resultData.length
         this.listLoading = false

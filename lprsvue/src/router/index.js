@@ -75,12 +75,25 @@ export const constantRoutes = [
   {
     path: '/orderpic',
     component: Layout,
+    alwaysShow: true,
+    name: 'orderpic',
+    meta: {
+      title: '车辆管理',
+      icon: 'car',
+    },
     children: [
       {
-        path: 'index',
-        name: '图片订单',
-        component: () => import('@/views/orderpic/index'),
-        meta: { title: '图片订单', icon: 'table' }
+        path: 'vehicleRecord',
+        name: '车辆记录',
+        component: () => import('@/views/orderpic/vehicleRecord/index'),
+        meta: { title: '车辆记录', icon: 'table' }
+      },
+      {
+        path: 'takeOutFoodCar',
+        name: '外卖车辆',
+        component: () => import('@/views/orderpic/takeOutFoodCar/index'),
+        meta: { title: '外卖车辆', icon: 'table' }
+
       }
     ]
   },  

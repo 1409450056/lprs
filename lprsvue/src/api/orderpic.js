@@ -8,3 +8,20 @@ export function selectAllByMarkOrder(params) {
     params
   })
 }
+
+export function selectByMark(params) {
+  return request({
+    url: `api/selectByMark?mark=1`,
+    method: 'get',
+    baseURL: '/api',
+    params
+  })
+}
+
+export function updateAllByUrl(number) {
+  return request({
+    url:  `api/updateAllByUrl?number=${number}`,
+    method: 'post',
+    baseURL: '/api',
+  })
+}

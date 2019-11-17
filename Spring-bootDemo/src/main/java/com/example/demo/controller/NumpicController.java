@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -81,10 +82,11 @@ public class NumpicController {
     * */
     @ApiOperation(value="按车牌号修改标记值")
     @PostMapping(value = "api/updateAllByUrl")
-    public String updateAllByUrl(@RequestBody  Numpic requestNupic) throws ParseException {
+    public String updateAllByUrl(@RequestParam  String number) throws ParseException, UnsupportedEncodingException {
 
         JSONObject jsonObject = new JSONObject();
-        numpic.updateMarkByNumber(requestNupic);
+        number = java.net.URLDecoder.decode(number,"UTF-8");
+        numpic.updateMarkByNumber(number);
        // System.out.println("i========= " + a);
         jsonObject.put("code",20000);
         jsonObject.put("message","车辆信息已修改");
