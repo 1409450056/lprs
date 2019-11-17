@@ -2,16 +2,12 @@
   <div class="user-activity">
     <div class="post">
       <div class="user-block">
-        <img class="img-circle" :src="'https://wpimg.wallstcn.com/57ed425a-c71e-4201-9428-68760c0537c4.jpg'+avatarPrefix">
-        <span class="username text-muted">Iron Man</span>
-        <span class="description">Shared publicly - 7:30 PM today</span>
+        <img class="img-circle" :src="'http://192.144.152.148:997/avatar1.jpg'+avatarPrefix">
+        <span class="username text-muted">周蔚宣</span>
+        <span class="description">4:30 AM today</span>
       </div>
       <p>
-        Lorem ipsum represents a long-held tradition for designers,
-        typographers and the like. Some people hate it and argue for
-        its demise, but others ignore the hate as they create awesome
-        tools to help create filler text for everyone from bacon lovers
-        to Charlie Sheen fans.
+        好嗨哟，感觉人生到达了高潮
       </p>
       <ul class="list-inline">
         <li>
@@ -30,16 +26,12 @@
     </div>
     <div class="post">
       <div class="user-block">
-        <img class="img-circle" :src="'https://wpimg.wallstcn.com/9e2a5d0a-bd5b-457f-ac8e-86554616c87b.jpg'+avatarPrefix">
-        <span class="username text-muted">Captain American</span>
-        <span class="description">Sent you a message - yesterday</span>
+        <img class="img-circle" :src="'http://192.144.152.148:997/avatar2.jpg'+avatarPrefix">
+        <span class="username text-muted">陈智嘉</span>
+        <span class="description">发送了一条消息 - 7:30 today</span>
       </div>
       <p>
-        Lorem ipsum represents a long-held tradition for designers,
-        typographers and the like. Some people hate it and argue for
-        its demise, but others ignore the hate as they create awesome
-        tools to help create filler text for everyone from bacon lovers
-        to Charlie Sheen fans.
+       前端好难啊，我不会写啊
       </p>
       <ul class="list-inline">
         <li>
@@ -58,8 +50,8 @@
     </div>
     <div class="post">
       <div class="user-block">
-        <img class="img-circle" :src="'https://wpimg.wallstcn.com/fb57f689-e1ab-443c-af12-8d4066e202e2.jpg'+avatarPrefix">
-        <span class="username">Spider Man</span>
+        <img class="img-circle" :src="'http://192.144.152.148:997/avatar3.jpg'+avatarPrefix">
+        <span class="username">孙晓鹏</span>
         <span class="description">Posted 4 photos - 2 days ago</span>
       </div>
       <div class="user-images">

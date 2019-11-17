@@ -2,15 +2,17 @@ import request from '@/utils/request'
 
 export function resetEmail(data) {
   return request({
-    url: 'api/resetEmail',
+    url: '/resetEmail',
     method: 'post',
+    baseURL: '/api',
     data
   })
 }
 
 export function updatePass(pass) {
   return request({
-    url: 'api/updatePass/' + pass,
+    url: '/updatePass/' + pass,
+    baseURL: '/api',
     method: 'get'
   })
 }

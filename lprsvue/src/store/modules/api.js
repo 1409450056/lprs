@@ -12,7 +12,7 @@ const api = {
     // Sql 监控
     sqlApi: baseUrl + '/druid',
     // swagger
-    swaggerApi: 'http://localhost:8080' + '/swagger-ui.html',
+    swaggerApi: 'http://192.144.152.148:8080/swagger-ui.html',
     // 文件上传
     fileUploadApi: baseUrl + '/api/localStorage',
     // baseUrl，

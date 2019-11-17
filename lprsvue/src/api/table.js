@@ -46,7 +46,7 @@ export function finishOrder(orderNo, data) {
 
 export function selectByNumber(number, params) {
   return request({
-    url: `api/selectOrderByNumber?number=${number}`,
+    url: `/selectOrderByNumber?number=${number}`,
     method: 'get',
     baseURL: '/api',
     params
