@@ -27,7 +27,7 @@ public interface NumpicMapper {
 
     List<Numpic> selectAllByMarkOrder();
 
-    int updateMarkByPrimaryKey(Numpic record);
+    int updateMarkByPrimaryKey(String number);
 
     List<Numpic> selectUrlByPrimaryKey(String number);
 

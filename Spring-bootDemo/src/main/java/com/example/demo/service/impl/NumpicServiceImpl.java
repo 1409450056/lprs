@@ -57,8 +57,8 @@ public class NumpicServiceImpl implements NumpicService {
     }
 
     @Override
-    public int updateMarkByNumber(Numpic record) {
-        return numpicMapper.updateMarkByPrimaryKey(record);
+    public int updateMarkByNumber(String number) {
+        return numpicMapper.updateMarkByPrimaryKey(number);
     }
 
     @Override

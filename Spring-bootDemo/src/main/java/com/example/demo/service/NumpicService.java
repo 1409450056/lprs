@@ -19,7 +19,7 @@ public interface NumpicService {
 
     List<Numpic> selectAllByMarkOrder();
 
-    int updateMarkByNumber(Numpic record);
+    int updateMarkByNumber(String number);
 
     String selectUrlByPrimaryKey(String number);
 

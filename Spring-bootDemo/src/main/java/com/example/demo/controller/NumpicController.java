@@ -81,11 +81,10 @@ public class NumpicController {
     * */
     @ApiOperation(value="按车牌号修改标记值")
     @PostMapping(value = "api/updateAllByUrl")
-    public String updateAllByUrl(@RequestBody  Numpic requestNupic) throws ParseException {
+    public String updateAllByUrl(@RequestParam String number) throws ParseException {
 
         JSONObject jsonObject = new JSONObject();
-        numpic.updateMarkByNumber(requestNupic);
-       // System.out.println("i========= " + a);
+        numpic.updateMarkByNumber(number);
         jsonObject.put("code",20000);
         jsonObject.put("message","车辆信息已修改");
 
