@@ -9,12 +9,26 @@ spring:
       enabled: true
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lprs?unicode=true&serverTimezone=GMT&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://192.144.152.148:3306/lprs?unicode=true&serverTimezone=GMT&characterEncoding=utf-8&useSSL=false
     username: root
     password: root
+  data:
+    redis:
+      repositories:
+        enabled: false
 
+  redis:
+    #数据库索引
+    database: 0
+    host: 192.144.152.148
+    port: 6379
+    password:
+    #连接超时时间
+    timeout: 5000
+
+loginCode:
+  expiration: 2
 my:
   name: zhou
   age: 20
 spring.resources.static-locations: file:/usr/bin/image
-

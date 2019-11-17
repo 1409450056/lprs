@@ -23,8 +23,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("SpringBoot API Doc")
-                .description("This is a restful api document of Spring Boot.")
+                .title("校园车牌识别系统接口文档")
+                .description("lprs的restful api文档")
                 .version("1.0")
                 .build();
     }

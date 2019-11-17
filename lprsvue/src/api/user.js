@@ -1,17 +1,31 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login(username, password, code, uuid) {
   return request({
-    url: '/login',
-    method: 'post',
+    url: 'api/login',
     baseURL: '/api',
-    data
+    method: 'post',
+    data: {
+      username,
+      password,
+      code,
+      uuid
+    }
   })
 }
 
+export function getCodeImg() {
+  return request({
+    url: 'api/code',
+    method: 'get',
+    baseURL: '/api',
+  })
+}
+
+
 export function register(data) {
   return request({
-    url: '/register',
+    url: '/api/register',
     method: 'post',
     baseURL: '/api',
     data

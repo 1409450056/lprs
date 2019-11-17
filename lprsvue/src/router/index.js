@@ -59,7 +59,6 @@ export const constantRoutes = [
       meta: { title: '主页', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/table',
     component: Layout,
@@ -74,75 +73,30 @@ export const constantRoutes = [
   },
 
   {
-    path: '/form',
+    path: '/orderpic',
     component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    alwaysShow: true,
+    name: 'orderpic',
     meta: {
-      title: 'Nested',
-      icon: 'nested'
+      title: '车辆管理',
+      icon: 'car',
     },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+        path: 'vehicleRecord',
+        name: '车辆记录',
+        component: () => import('@/views/orderpic/vehicleRecord/index'),
+        meta: { title: '车辆记录', icon: 'table' }
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
+        path: 'takeOutFoodCar',
+        name: '外卖车辆',
+        component: () => import('@/views/orderpic/takeOutFoodCar/index'),
+        meta: { title: '外卖车辆', icon: 'table' }
+
       }
     ]
-  },
+  },  
 
   {
     path: '/upload',
@@ -215,6 +169,34 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/swagger',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'swagger',
+        component: () => import('@/views/swagger'),
+        name: '接口文档',
+        meta: { title: '接口文档', icon: 'swagger' }
+      }
+    ]
+  },
+  {
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/index',
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/profile/index'),
+        name: '个人中心',
+        meta: { title: '个人中心', icon: 'user', noCache: true }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

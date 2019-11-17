@@ -38,6 +38,14 @@ public class OrdersServicelmpl implements OrdersService {
     public Orders selectByPrimaryKey(int orderNo) {
         return orderMapper.selectByPrimaryKey(orderNo);
     }
+    @Override
+    public Orders selectByNumber(String number) {
+        return orderMapper.selectByNumber(number);
+    }
+    @Override
+    public Orders selectByPrimaryKey1(String number) {
+        return orderMapper.selectByPrimaryKey1(number);
+    }
 
     @Override
     public void updateByPrimaryKeySelective(Orders record) {

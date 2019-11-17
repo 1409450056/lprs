@@ -1,18 +1,24 @@
 package com.example.demo.controller;
 
+import cn.hutool.core.util.IdUtil;
+import com.example.demo.model.AuthUser;
+import com.example.demo.model.ImgResult;
 import com.example.demo.model.Users;
 import com.example.demo.result.Result;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.example.demo.utils.EncryptUtils;
+import com.example.demo.utils.Exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.wf.captcha.ArithmeticCaptcha;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 import com.example.demo.service.*;
-import springfox.documentation.spring.web.json.Json;
-
 import java.util.*;
 
 
@@ -20,22 +26,39 @@ import java.util.*;
 @Api(value = "登陆")
 @RestController
 public class UserController {
+    private String codeKey;
+    private final RedisService redisService;
     @Autowired
     private UsersService userService;
 
     @Autowired
     private ObjectMapper jacksonObjectMapper;
 
+    public UserController(RedisService redisService ) {
+        this.redisService = redisService;
+    }
+
     @PostMapping(value = "api/login")
-    public Result login(@RequestBody Users requestUser) {
+    @ApiImplicitParam(name="authorizationUser",value="登录信息",dataType = "AuthUser")
+    @ApiOperation(value="登录")
+    public Result login(@Validated @RequestBody AuthUser authorizationUser) throws Exception {
         // 对 html 标签进行转义，防止 XSS 攻击
+        String code = redisService.getCodeVal(authorizationUser.getUuid());
+        redisService.delete(authorizationUser.getUuid());
+        if (StringUtils.isBlank(code)) {
+            return new Result(60204, null, "验证码已过期");
+        }
+        if (StringUtils.isBlank(authorizationUser.getCode()) || !authorizationUser.getCode().equalsIgnoreCase(code)) {
+            return new Result(60204, null, "验证码错误");
+
+        }
         String username, password, token;
-        username = HtmlUtils.htmlEscape(requestUser.getUsername());
+        username = HtmlUtils.htmlEscape(authorizationUser.getUsername());
         Integer id = userService.findIdByUsername(username);
         Users user = userService.findByid(id);
         if (user!=null) {
-            password = user.getPassword();
-            if (Objects.equals(password, requestUser.getPassword())) {
+            password = EncryptUtils.desEncrypt(authorizationUser.getPassword());
+            if (Objects.equals(password, user.getPassword())) {
                 System.out.println("login: "+username + " " + password);
                 Map<String, String> data = new HashMap<>();
                 if(userService.getRole(id).equals("admin")) {
@@ -48,15 +71,39 @@ public class UserController {
             }
         }
         String message = "账号密码错误";
-        Map<String, String> data = new HashMap<>();
-        return new Result(60204, data, "账号密码错误");
+
+        return new Result(60204, null, "账号密码错误");
     }
 
+    @ApiOperation("获取验证码")
+    @GetMapping(value = "api/code")
+    public String getCode(){
+        // 算术类型 https://gitee.com/whvse/EasyCaptcha
+        ArithmeticCaptcha captcha = new ArithmeticCaptcha(111, 36);
+        // 几位数运算，默认是两位
+        captcha.setLen(2);
+        // 获取运算的结果：5
+        String result = captcha.text();
+        String uuid = codeKey + IdUtil.simpleUUID();
+        redisService.saveCode(uuid,result);
+        //return new ImgResult(captcha.toBase64(),uuid);
+          Map<String, String> data = new HashMap<>();
+        List<Map<String,String>> list = new ArrayList<>();
+
+        data.put("img",captcha.toBase64());
+        data.put("uuid",uuid);
+        JSONObject  jsonObject = new JSONObject();
+        jsonObject.put("code",20000);
+        jsonObject.put("data",data);
+        return jsonObject.toString();
+    }
+    @ApiOperation(value="注册")
+    @ApiImplicitParam(name="requestUser",value="注册信息",dataType = "Users")
     @PostMapping(value = "api/register")
-    public Result register(@RequestBody Users requestUser) {
+    public Result register( @RequestBody Users requestUser) throws Exception {
         String username = requestUser.getUsername();
         // username = HtmlUtils.htmlEscape(username);
-        String password = requestUser.getPassword();
+        String password = EncryptUtils.desEncrypt(requestUser.getPassword());
         System.out.println("注册: " + username + " " + password);
         int id = userService.findIdByUsername(username);
         Users user = userService.findByid(id);
@@ -73,7 +120,8 @@ public class UserController {
         }
         return new Result(60240, null, "添加失败，用户已存在");
     }
-
+    @ApiOperation(value="删除用户")
+    @ApiImplicitParam(name="id",value="删除用户的编号",dataType = "int")
     @DeleteMapping(value = "api/deleteRole")
     public String deleteUser(@RequestParam("id") int id) {
         JSONObject  jsonObject = new JSONObject();
@@ -91,8 +139,9 @@ public class UserController {
     }
 
     @ResponseBody
+    @ApiOperation(value="获取全部用户")
     @GetMapping(value = "api/getUsers")
-    public String getUsers() {
+    public String getUsers() throws Exception {
         JSONObject  jsonObject = new JSONObject();
         jsonObject.put("code",20000);
         List<Users> users = userService.findAll();
@@ -102,7 +151,7 @@ public class UserController {
             data.put("id",u.getId().toString());
             data.put("key",u.getRole());
             data.put("username",u.getUsername());
-            data.put("password",u.getPassword());
+            data.put("password",EncryptUtils.desDecrypt(u.getPassword()));
             list.add(data);
         }
         jsonObject.put("data",list);
@@ -110,6 +159,8 @@ public class UserController {
     }
 
     @PutMapping(value = "api/updateUsers")
+    @ApiImplicitParam(name="id",value="修改用户的编号",dataType = "int")
+    @ApiOperation(value="修改用户")
     public String updateUser(@RequestParam("id") int id, @RequestBody Users requestUser){
         JSONObject  jsonObject = new JSONObject();
         Users user = userService.findByid(id);
