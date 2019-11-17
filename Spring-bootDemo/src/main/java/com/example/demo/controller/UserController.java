@@ -10,17 +10,15 @@ import com.example.demo.utils.Exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wf.captcha.ArithmeticCaptcha;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 import com.example.demo.service.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -41,6 +39,8 @@ public class UserController {
     }
 
     @PostMapping(value = "api/login")
+    @ApiImplicitParam(name="authorizationUser",value="登录信息",dataType = "AuthUser")
+    @ApiOperation(value="登录")
     public Result login(@Validated @RequestBody AuthUser authorizationUser) throws Exception {
         // 对 html 标签进行转义，防止 XSS 攻击
         String code = redisService.getCodeVal(authorizationUser.getUuid());
@@ -97,9 +97,10 @@ public class UserController {
         jsonObject.put("data",data);
         return jsonObject.toString();
     }
-
+    @ApiOperation(value="注册")
+    @ApiImplicitParam(name="requestUser",value="注册信息",dataType = "Users")
     @PostMapping(value = "api/register")
-    public Result register(@RequestBody Users requestUser) throws Exception {
+    public Result register( @RequestBody Users requestUser) throws Exception {
         String username = requestUser.getUsername();
         // username = HtmlUtils.htmlEscape(username);
         String password = EncryptUtils.desEncrypt(requestUser.getPassword());
@@ -119,7 +120,8 @@ public class UserController {
         }
         return new Result(60240, null, "添加失败，用户已存在");
     }
-
+    @ApiOperation(value="删除用户")
+    @ApiImplicitParam(name="id",value="删除用户的编号",dataType = "int")
     @DeleteMapping(value = "api/deleteRole")
     public String deleteUser(@RequestParam("id") int id) {
         JSONObject  jsonObject = new JSONObject();
@@ -137,6 +139,7 @@ public class UserController {
     }
 
     @ResponseBody
+    @ApiOperation(value="获取全部用户")
     @GetMapping(value = "api/getUsers")
     public String getUsers() throws Exception {
         JSONObject  jsonObject = new JSONObject();
@@ -156,6 +159,8 @@ public class UserController {
     }
 
     @PutMapping(value = "api/updateUsers")
+    @ApiImplicitParam(name="id",value="修改用户的编号",dataType = "int")
+    @ApiOperation(value="修改用户")
     public String updateUser(@RequestParam("id") int id, @RequestBody Users requestUser){
         JSONObject  jsonObject = new JSONObject();
         Users user = userService.findByid(id);

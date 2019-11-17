@@ -4,6 +4,8 @@ import com.example.demo.mapper.ParklotMapper;
 import com.example.demo.model.Parklot;
 import com.example.demo.service.ParklotService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.jdbc.Null;
 import org.json.JSONObject;
@@ -64,6 +66,7 @@ public class ParklotController {
 
     @ApiOperation(value = "更新车位信息")
     @PostMapping(value = "api/updateParklot")
+    @ApiImplicitParam(name="requestOrder",value="车位信息",dataType = "Parklot")
     public String updateParklot(@RequestBody Parklot requestOrder) {
         JSONObject jsonObject = new JSONObject();
         String number = requestOrder.getNumber();

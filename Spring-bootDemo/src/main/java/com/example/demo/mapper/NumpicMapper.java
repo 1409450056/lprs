@@ -34,4 +34,8 @@ public interface NumpicMapper {
     int selectMarkByPrimaryKey(String number);
 
     String SelectNumberByUrl(String url);
+
+    String selectUrlBynumber(String number);
+
+    int selectMarkBynumber(String number);
 }

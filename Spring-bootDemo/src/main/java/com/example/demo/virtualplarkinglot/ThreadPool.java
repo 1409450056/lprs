@@ -218,84 +218,85 @@ public class ThreadPool implements CommandLineRunner {
 
 		    @Override
 		    public void run() {
-
 		    	/*
 		    	/获取进来的车牌号码
 		    	 */
 
+				String carnumber = null;
 
 
-
-		    	String carnumber=null;
-
-
-
-
-
-		    	carnumber=RandomCarNumber.generateCarID();
-		    	//初始值默认为flase来确认是否可停入停车场
-		    	boolean flag=false;
-		    	//设置遍历默认值
-		    	int i=0;
-		    	//生成随机值的数组来保证随机性
-		    	int []b=AR.suiji();
+				carnumber = RandomCarNumber.generateCarID();
+				//初始值默认为flase来确认是否可停入停车场
+				boolean flag = false;
+				//设置遍历默认值
+				int i = 0;
+				//生成随机值的数组来保证随机性
+				int[] b = AR.suiji();
 
 
-				int []b2=AR.suiji2();
-				String urladress=null;
-				urladress=fengzhuang.fengzhuangaddress(b2[0]);
-		    //	System.out.println(urladress);
-				String getnumber=ncs.SelectNumberByUrl(urladress);
+				int[] b2 = AR.suiji2();
+				String urladress = null;
+				urladress = fengzhuang.fengzhuangaddress(b2[0]);
+				//	System.out.println(urladress);
+				String getnumber = ncs.SelectNumberByUrl(urladress);
+				int ns = ncs.selectMarkByPrimaryKey(urladress);
 
-				int bianjishiyong=1;
-				boolean flagss=true;
-				while(flagss){
-					if(getnumber==null){
-						urladress=fengzhuang.fengzhuangaddress(b2[bianjishiyong]);
-						getnumber=ncs.SelectNumberByUrl(urladress);
+				int bianjishiyong = 1;
+				boolean flagss = true;
+				while (flagss) {
+					if (getnumber == null) {
+						urladress = fengzhuang.fengzhuangaddress(b2[bianjishiyong]);
+						getnumber = ncs.SelectNumberByUrl(urladress);
+						ns = ncs.selectMarkByPrimaryKey(urladress);
+
 						i++;
-					}else{
-						flagss=false;
+					} else {
+						flagss = false;
 					}
 				}
 
 
-
-				carnumber=getnumber;
-			//	System.out.println(getnumber);
+				carnumber = getnumber;
+				//	System.out.println(getnumber);
 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-				Date date =new Date();
+				Date date = new Date();
 				System.out.println(date);
 
-				Orders requestOrder=new Orders(0,carnumber,date,date,0);
+				Orders requestOrder = new Orders(0, carnumber, date, date, 0);
+
+
+				if (ns == 1) {
+
+					System.out.println("该车辆为外卖车辆，禁止进入");
+				} else {
 
 
 
-		    	for(i=0;i<50;i++) {
-		    		if(a[b[i]]==false) {
+				for (i = 0; i < 50; i++) {
+					if (a[b[i]] == false) {
 
-						boolean flags=true;
+						boolean flags = true;
 
 						String number = requestOrder.getNumber();
         /*Date orderDeploytime = requestOrder.getDeploytime();
         Integer orderStatus = requestOrder.getStatus();*/
 						Date orderDeploytime = null;
-						orderDeploytime=requestOrder.getDeploytime();
+						orderDeploytime = requestOrder.getDeploytime();
 
 						Integer orderStatus = 0;
 						List<Integer> statusList = orderService.getAllStatus(number);
-						for(int iii : statusList){
-							if(iii==0){
+						for (int iii : statusList) {
+							if (iii == 0) {
 
-								flags=false;
+								flags = false;
 								//					jsonObject.put("code",50000);
 								//					jsonObject.put("message","插入失败，车辆已入库");
 
 							}
 						}
-						if(flags==true) {
-						//	System.out.println("insert: " + number + " " + orderDeploytime + " " + orderStatus);
+						if (flags == true) {
+							//	System.out.println("insert: " + number + " " + orderDeploytime + " " + orderStatus);
 							Orders aa = new Orders(null, number, orderDeploytime, null, orderStatus);
 							orderService.insert(aa);
 
@@ -307,7 +308,7 @@ public class ThreadPool implements CommandLineRunner {
 							//			jsonObject.put("code",20000);
 							//			jsonObject.put("message","插入成功");
 
-							System.out.println("添加订单成功"+"  "+"订单车牌号为："+number);
+							System.out.println("添加订单成功" + "  " + "订单车牌号为：" + number);
 
 							a[b[i]] = true;
 							num[b[i]] = carnumber;
@@ -319,36 +320,33 @@ public class ThreadPool implements CommandLineRunner {
 						}
 
 
-		    		}
+					}
 
-		    	}
+				}
 
 
+				if (flag == true) {
 
-		    	if(flag==true) {
-
-		    		Parklot requestparklot=new Parklot(i,carnumber);
+					Parklot requestparklot = new Parklot(i, carnumber);
 					PlS.updateByPrimaryKey(requestparklot);
-		    		System.out.println("停车成功，" +"停入车位为"+i+"号车位 "  + "停入车辆车牌号："+carnumber);
+					System.out.println("停车成功，" + "停入车位为" + i + "号车位 " + "停入车辆车牌号：" + carnumber);
 
 
+					PlarkingLot.a = a;
+					//		PlarkingLot.list=list;
+					setB(num);
+				} else {
+					System.out.println("车辆已存在，停车失败");
+					try {
+						// sleep一秒保证3个任务在分别在3个线程上执行
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 
+				}
 
-		    		PlarkingLot.a=a;
-		    //		PlarkingLot.list=list;
-		    		setB(num);
-		    	}else {
-		   		System.out.println("车辆已存在，停车失败");
-		   	 try {
-		            // sleep一秒保证3个任务在分别在3个线程上执行
-		           Thread.sleep(1000);
-		        } catch (InterruptedException e) {
-		           e.printStackTrace();
-		        }
-
-		    	}
-
-
+			}
 
 	        // 打印正在执行的缓存线程信息
 		     //    System.out.println(Thread.currentThread().getName() + "正在被执行");

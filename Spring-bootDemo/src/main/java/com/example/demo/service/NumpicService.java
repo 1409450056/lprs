@@ -11,6 +11,8 @@ public interface NumpicService {
 
     String getUrl(String number);
 
+    String getDestUrl(String number);
+
     boolean findDuplicate(String number);
 
     List<Numpic> selectByMark(int mark);
@@ -30,4 +32,6 @@ public interface NumpicService {
     void delectNumpic(String number);
 
     String SelectNumberByUrl(String url);
+
+    int selectMarkBynumber(String number);
 }

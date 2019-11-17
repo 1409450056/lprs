@@ -5,6 +5,9 @@ import com.example.demo.result.UploadResult;
 import com.example.demo.service.NumpicService;
 import com.example.demo.service.impl.NumpicServiceImpl;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,7 @@ public class UploadController {
     @Autowired
     NumpicService numpic;
     @ResponseBody
+    @ApiOperation(value="上传图片")
     @PostMapping("api/upload")
     public UploadResult upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
         String path = "E:/workspace-idea/lprs/Spring-bootDemo/res/image";
@@ -52,7 +56,7 @@ public class UploadController {
                 String fileUrl = "http://localhost:8080";
                 //文件获取路径
                 fileUrl = fileUrl + request.getContextPath() + "/image/" + fileName;
-                numpic.bindPic(plate,fileUrl);
+                //numpic.bindPic(plate,fileUrl);
             }
             String fileUrl = numpic.getUrl(plate);
             return new UploadResult(true,"null",plate,fileUrl,color,name);
